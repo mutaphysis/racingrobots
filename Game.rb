@@ -15,20 +15,23 @@ end
 
 class BoardElement   
   attr_accessor :x, :y, :direction
+  attr_reader :phases
   
-  def initialize()
+  def initialize(x, y, direction)
     @phases = []
+    @x = x
+    @y = y    
+    @direction = direction    
   end
   
-  def act(game)
+  def act(game, phase)
   end  
 end
 
 class Conveyor < BoardElement
   def initialize(x, y, direction, express)
-    @x = x
-    @y = y    
-    @direction = direction 
+    super(x, y, direction)
+    
     @express = express   
     
     if @express then @phases = [200, 300] 
@@ -36,20 +39,20 @@ class Conveyor < BoardElement
     end
   end
   
-  def act(game)
+  def act(game, phase)
     # there can only be one robot here anyway
     robot = game.get_typed_at(@x, @y, Robot).first    
     
     if not robot.nil? then
       case @direction
         when 'e' then
-          robot.x = robot.x + (@express ? 2 : 1)
+          robot.x = robot.x + 1
         when 'w' then
-          robot.x = robot.x - (@express ? 2 : 1)
+          robot.x = robot.x - 1
         when 'n' then          
-          robot.y = robot.y - (@express ? 2 : 1)
+          robot.y = robot.y - 1
         when 's' then          
-          robot.y = robot.y + (@express ? 2 : 1)
+          robot.y = robot.y + 1
         else
       end
     end
@@ -57,10 +60,11 @@ class Conveyor < BoardElement
 end
 
 class Robot < BoardElement
+  attr_reader :id
+  
   def initialize(x, y, direction, id)
-    @x = x
-    @y = y    
-    @direction = direction
+    super(x, y, direction)
+    @id = id
   end
 end
 
@@ -88,18 +92,32 @@ class Game
     self
   end
   
-  def step_turn
-    y = 0    
+  def step_turn    
+    phases = {};
     
-    
-    @board.each do |row|
-      x = 0
+    # collect phases    
+    @board.each do |row|    
       row.each do |column|         
         column.each do |item| 
-          item.act(self)
+          item.phases.each do |phase|
+            if phases[phase].nil? then              
+              phases[phase] = [item]
+            else
+              phases[phase] << item
+            end
+          end
         end          
       end
     end
+    
+    
+    phases.sort.map do |phase, items|
+      items.each do |item|
+        item.act(self, phase)
+      end
+    end
+    
+  
   end
   
   def create_robot(x, y, direction)
