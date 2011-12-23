@@ -1,7 +1,7 @@
 require 'rspec'
 
 # TODO including does look like shit
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "Game"))
+require_relative '../../Game'
 
 def mapfacing(facing) 
 end

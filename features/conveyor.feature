@@ -141,6 +141,12 @@ Feature: Move Robot
     Then the 1st robot is at 0, 0 facing east
     Then the 2nd robot is at 1, 0 facing west
     
+  Scenario: Conveyance on express and normal tiles
+    Given there is a board:
+        | Ce* | Ce |  |
+    And there is a robot at 0, 0 facing east
+    When a turn is played  
+    Then the 1st robot is at 2, 0 facing east
     
     
     

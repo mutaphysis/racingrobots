@@ -1,25 +1,9 @@
-$key_direction = {"w" => :west, "n" => :north, "e" => :east, "s" => :south }
-$mirror_direction = {:west => :east, :north => :south, :east => :west, :south => :north }
-$rotate_direction = { :right => {:west => :north, :north => :east, :east => :south, :south => :west }, 
-                      :left  => {:west => :south, :south => :east, :east => :north, :north => :west }}
+require_relative 'utils'
+require_relative 'Robot'
+require_relative 'Conveyor'
+require_relative 'BoardElement'
 
-def offset_coordinate(x, y, direction)
-  case direction
-    when :east then
-      x = x + 1
-    when :west then
-      x = x - 1
-    when :north then          
-      y = y - 1
-    when :south then          
-      y = y + 1
-    else
-  end
-  
-  { :x => x, :y => y }
-end
-
-def parse_field(fieldDescription, x, y)
+def parse_fields(fieldDescription, x, y)
   fields = []
   case fieldDescription[0]
     when 'C' then    
@@ -33,84 +17,6 @@ def parse_field(fieldDescription, x, y)
   end
     
   fields
-end
-
-class BoardElement
-  attr_accessor :x, :y, :direction
-  attr_reader :phases
-  
-  def initialize(x, y, direction)
-    @phases = []
-    @x = x
-    @y = y    
-    @direction = direction    
-  end
-  
-  def act(game, phase)
-  end  
-end
-
-class Conveyor < BoardElement
-  attr_reader :turnFromLeft
-  
-  def initialize(x, y, direction, express, turnFromLeft, turnFromRight)
-    super(x, y, direction)
-    
-    @express = express   
-    
-    @turnFromLeft = turnFromLeft
-    @turnFromRight = turnFromRight
-    
-    if @express then @phases = [200, 300] else @phases = [300]  
-    end
-  end
-  
-  def act(game, phase)
-    # there can only be one robot here anyway
-    robot = game.get_typed_at(@x, @y, Robot).first    
-    
-    if not robot.nil? then
-      new_coord = offset_coordinate(robot.x, robot.y, @direction)
-      direction = robot.direction          
-      
-      # blocked by a robot 
-      obstacle = game.get_typed_at(new_coord[:x], new_coord[:y], Robot).first      
-      return unless obstacle.nil?
-      
-      # if moved onto another conveyor, could be turned
-      conveyor = game.get_typed_at(new_coord[:x], new_coord[:y], Conveyor).first
-      if not conveyor.nil? then
-        turn = conveyor.get_turn_from(@direction)
-        
-        if not turn.nil? then
-          direction = $rotate_direction[turn][robot.direction]          
-        end                
-      end            
-      
-      game.add_robot_action(robot, new_coord[:x], new_coord[:y], direction)            
-    end
-  end
-  
-  def get_turn_from(direction)     
-    if @turnFromLeft and direction == $rotate_direction[:right][@direction] then
-      return :left
-    end    
-    
-    if @turnFromRight and direction == $rotate_direction[:left][@direction] then
-      return :right
-    end
-    
-    nil
-  end
-end
-
-class Robot < BoardElement
-  attr_reader :id
-  
-  def initialize(x, y, direction, id)
-    super(x, y, direction)
-    @id = id
-  end
 end
 
 class Game  
@@ -129,7 +35,7 @@ class Game
       x = 0
       row.collect do |item| 
         #p "added at #{x} #{y}"
-        @board[y][x] = parse_field(item, x, y)
+        @board[y][x] = parse_fields(item, x, y)
         x += 1
       end
       y += 1      
