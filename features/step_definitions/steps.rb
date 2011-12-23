@@ -28,5 +28,5 @@ Then /^the (\d+)(?:st|nd|rd|th) robot is at (\d+), (\d+) facing (\w+)$/ do |robo
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.x.should == x.to_i
   robot.y.should == y.to_i
-  robot.facing.should === facing[0]
+  robot.direction.should === facing[0]
 end

@@ -13,7 +13,18 @@ def parseField(fieldDescription, x, y)
   fields
 end
 
-class Conveyor 
+class BoardElement   
+  attr_accessor :x, :y, :direction
+  
+  def initialize()
+    @phases = []
+  end
+  
+  def act(game)
+  end  
+end
+
+class Conveyor < BoardElement
   def initialize(x, y, direction, express)
     @x = x
     @y = y    
@@ -45,20 +56,15 @@ class Conveyor
   end
 end
 
-class Robot
-  def initialize(x, y, facing, id)
+class Robot < BoardElement
+  def initialize(x, y, direction, id)
     @x = x
     @y = y    
-    @facing = facing
-  end
-  
-  attr_accessor :x, :y, :facing
-  
-  def act(game)
+    @direction = direction
   end
 end
 
-class Game
+class Game  
   def initialize()
     @robots = []
     @board = []
@@ -84,6 +90,8 @@ class Game
   
   def step_turn
     y = 0    
+    
+    
     @board.each do |row|
       x = 0
       row.each do |column|         
@@ -94,8 +102,8 @@ class Game
     end
   end
   
-  def create_robot(x, y, facing)
-    robot = Robot.new(x, y, facing, @robots.length)
+  def create_robot(x, y, direction)
+    robot = Robot.new(x, y, direction, @robots.length)
     @robots[@robots.length] = robot
     @board[y][x] << robot
   end
