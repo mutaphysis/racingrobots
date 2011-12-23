@@ -78,4 +78,14 @@ Feature: Move Robot
     Then the 1st robot is at 0, 2 facing east
     When a turn is played
     Then the 1st robot is at 1, 2 facing east
+    When a turn is played
+    Then the 1st robot is at 2, 2 facing north
+    When a turn is played
+    Then the 1st robot is at 2, 1 facing north
+    When a turn is played
+    Then the 1st robot is at 2, 0 facing west
+    When a turn is played
+    Then the 1st robot is at 1, 0 facing west
+    When a turn is played
+    And there is a robot at 0, 0 facing south
     
