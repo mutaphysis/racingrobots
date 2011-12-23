@@ -6,7 +6,10 @@ def parseField(fieldDescription, x, y)
   fields = []
   case fieldDescription[0]
     when 'C' then    
-      fields << Conveyor.new(x, y, fieldDescription[1], fieldDescription[fieldDescription.length - 1] === '*')
+      express = !fieldDescription.index('*').nil?
+      turnFromLeft = !fieldDescription.index('l').nil?
+      turnFromRight = !fieldDescription.index('r').nil?
+      fields << Conveyor.new(x, y, fieldDescription[1], express, turnFromLeft, turnFromRight)
     else
   end
   
@@ -29,10 +32,13 @@ class BoardElement
 end
 
 class Conveyor < BoardElement
-  def initialize(x, y, direction, express)
+  def initialize(x, y, direction, express, turnFromLeft, turnFromRight)
     super(x, y, direction)
     
     @express = express   
+    
+    @turnFromLeft = turnFromLeft
+    @turnFromRight = turnFromRight
     
     if @express then @phases = [200, 300] 
     else @phases = [300]  

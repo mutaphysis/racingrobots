@@ -68,13 +68,14 @@ Feature: Move Robot
             
   Scenario: A robot on an express conveyor belt going north
     Given there is a board:
-        | Cs | Ce | Ce |
-        | Cs |    | Cn |
-        | Cw | Cw | Cn |
-    And there is a robot at 0, 2 facing north
+        | Csl | Cw | Cwl |
+        | Cs  |    | Cn  |
+        | Cel | Ce | Cnl |
+    And there is a robot at 0, 0 facing south
     When a turn is played
-    Then the 1st robot is at 0, 0 facing north
-    
-    
-    
+    Then the 1st robot is at 0, 1 facing south
+    When a turn is played
+    Then the 1st robot is at 0, 2 facing east
+    When a turn is played
+    Then the 1st robot is at 1, 2 facing east
     
