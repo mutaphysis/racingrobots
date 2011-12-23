@@ -37,8 +37,8 @@ class Conveyor < BoardElement
   end
   
   def act(game)
-    # there can only be one robot there anyway
-    robot = game.get_typed_at(@x, @y, Robot)[0]    
+    # there can only be one robot here anyway
+    robot = game.get_typed_at(@x, @y, Robot).first    
     
     if not robot.nil? then
       case @direction
