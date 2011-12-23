@@ -157,6 +157,20 @@ class Game
         item.act(self, phase)        
       end
 
+      check_invalid = false
+      
+      # replace invalid actions       
+      @action_queue.combination(2) do |combination|
+        first = combination[0]
+        second = combination[1]
+        
+        if first[:x] === second[:x] and first[:y] === second[:y] then
+          @action_queue.delete(first)
+          @action_queue.delete(second)
+          check_invalid = true         
+        end
+      end
+
       @action_queue.each do |action|
         self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
       end      
