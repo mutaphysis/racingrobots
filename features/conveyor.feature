@@ -120,6 +120,18 @@ Feature: Move Robot
     When a turn is played  
     Then the 1st robot is at 0, 0 facing east
     Then the 2nd robot is at 2, 0 facing west
+              
+  Scenario: Three robots on a conveyor belt blocking each others turn
+    Given there is a board:
+        | Ce | Ce | Csrl | Cw |
+    And there is a robot at 0, 0 facing east
+    And there is a robot at 1, 0 facing east
+    And there is a robot at 3, 0 facing west
+    When a turn is played  
+    Then the 1st robot is at 0, 0 facing east
+    Then the 2nd robot is at 1, 0 facing east    
+    Then the 3rd robot is at 3, 0 facing west
+    
     
     
     
