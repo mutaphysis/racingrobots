@@ -35,7 +35,7 @@ def parse_field(fieldDescription, x, y)
   fields
 end
 
-class BoardElement   
+class BoardElement
   attr_accessor :x, :y, :direction
   attr_reader :phases
   
@@ -71,16 +71,21 @@ class Conveyor < BoardElement
     
     if not robot.nil? then
       new_coord = offset_coordinate(robot.x, robot.y, @direction)
-      direction = robot.direction
+      direction = robot.direction          
+      
+      # blocked by a robot 
+      obstacle = game.get_typed_at(new_coord[:x], new_coord[:y], Robot).first      
+      return unless obstacle.nil?
+      
       # if moved onto another conveyor, could be turned
-      conveyor = game.get_typed_at(new_coord[:x], new_coord[:y], Conveyor).first    
+      conveyor = game.get_typed_at(new_coord[:x], new_coord[:y], Conveyor).first
       if not conveyor.nil? then
         turn = conveyor.get_turn_from(@direction)
         
         if not turn.nil? then
           direction = $rotate_direction[turn][robot.direction]          
         end                
-      end
+      end            
       
       game.add_robot_action(robot, new_coord[:x], new_coord[:y], direction)            
     end
@@ -195,6 +200,7 @@ class Game
   
   def add_robot_action(robot, x, y, direction)
     @action_queue << {:robot => robot, :x => x, :y => y, :direction => direction }
+    @action_queue.last
   end
   
   def update_robot(robot, x, y, direction)       
