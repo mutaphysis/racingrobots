@@ -66,7 +66,7 @@ Feature: Move Robot
     When a turn is played
     Then the 1st robot is at 0, 0 facing north
             
-  Scenario: A robot on an express conveyor belt going north
+  Scenario: A robot on an express conveyor belt going round
     Given there is a board:
         | Csl | Cw | Cwl |
         | Cs  |    | Cn  |

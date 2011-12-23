@@ -12,7 +12,7 @@ def parseField(fieldDescription, x, y)
       fields << Conveyor.new(x, y, fieldDescription[1], express, turnFromLeft, turnFromRight)
     else
   end
-  
+    
   fields
 end
 
@@ -123,13 +123,15 @@ class Game
       end
     end
     
-  
+    self
   end
   
   def create_robot(x, y, direction)
     robot = Robot.new(x, y, direction, @robots.length)
     @robots[@robots.length] = robot
     @board[y][x] << robot
+    
+    robot
   end
   
   def get_robot(id)
@@ -147,5 +149,7 @@ class Game
   def self.create(data)
     game = Game.new
     game.setup_board(data)
+    
+    game
   end
 end
