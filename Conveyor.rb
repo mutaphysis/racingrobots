@@ -1,3 +1,4 @@
+require_relative 'utils'
 require_relative 'BoardElement'
 
 class Conveyor < BoardElement

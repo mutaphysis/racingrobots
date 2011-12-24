@@ -1,4 +1,5 @@
 $key_direction = {"w" => :west, "n" => :north, "e" => :east, "s" => :south }
+$key_rotation  = {"l" => :left, "r" => :right }
 $mirror_direction = {:west => :east, :north => :south, :east => :west, :south => :north }
 $rotate_direction = { :right => {:west => :north, :north => :east, :east => :south, :south => :west }, 
                       :left  => {:west => :south, :south => :east, :east => :north, :north => :west }}

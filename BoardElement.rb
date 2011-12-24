@@ -1,5 +1,3 @@
-require_relative 'utils'
-
 class BoardElement
   attr_accessor :x, :y, :direction
   attr_reader :phases

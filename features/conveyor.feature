@@ -1,5 +1,7 @@
-Feature: Move Robot
-  Conveyor belts move robots one or two fields. 
+Feature: Conveyor board element
+  Conveyor belts move robots in their given direction.
+  They can move twice per round, when they are express conveyors.
+  Robots can be rotated when being conveyed onto another conveyor.
   Conflicts when moving are resolved by not moving any robot involved in the moving at all.
 
   Scenario: A robot on a conveyor belt going east

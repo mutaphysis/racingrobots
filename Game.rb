@@ -1,6 +1,7 @@
 require_relative 'utils'
 require_relative 'Robot'
 require_relative 'Conveyor'
+require_relative 'Gear'
 require_relative 'BoardElement'
 
 def parse_fields(fieldDescription, x, y)
@@ -13,7 +14,9 @@ def parse_fields(fieldDescription, x, y)
       turnFromRight = !fieldDescription.index('r').nil?
       
       fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
-    else
+    when 'G' then        
+      rotation = $key_rotation[fieldDescription[1]]
+      fields << Gear.new(x, y, rotation ) 
   end
     
   fields
@@ -44,7 +47,7 @@ class Game
     self
   end
   
-  def step_turn    
+  def step_turn
     phases = {};
         
     # collect phases    
