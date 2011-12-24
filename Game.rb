@@ -80,7 +80,7 @@ class Game
           first = combination[0]
           second = combination[1]
         
-          if first[:x] === second[:x] and first[:y] === second[:y] then
+          if first[:x] === second[:x] and first[:y] === second[:y] and first[:priority] === second[:priority] then
             first[:x] = first[:robot].x
             first[:y] = first[:robot].y
             first[:direction] = first[:robot].direction
@@ -93,7 +93,10 @@ class Game
         end
       end while check_invalid
 
+      @action_queue.sort {|x,y| y[:priority] <=> x[:priority] }
+
       @action_queue.each do |action|
+        p action[:priority]
         self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
       end      
     end
@@ -110,7 +113,7 @@ class Game
   end
   
   def add_robot_action(robot, x, y, direction)
-    @action_queue << {:robot => robot, :x => x, :y => y, :direction => direction }
+    @action_queue << {:robot => robot, :priority => 0, :x => x, :y => y, :direction => direction }
     @action_queue.last
   end
   

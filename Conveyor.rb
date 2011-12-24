@@ -38,7 +38,7 @@ class Conveyor < BoardElement
         end                
       end            
       
-      game.add_robot_action(robot, new_coord[:x], new_coord[:y], direction)            
+      game.add_robot_action(robot, new_coord[:x], new_coord[:y], direction)
     end
   end
   

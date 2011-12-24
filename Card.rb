@@ -16,9 +16,17 @@ class Card
   
   def act(game, robot)
     case @type
-    when :uturn then robot.direction = $mirror_direction[robot.direction]
-    when :rotateleft then robot.direction = $rotate_direction[:left][robot.direction]
-    when :rotateright then robot.direction = $rotate_direction[:right][robot.direction]
+    when :uturn then 
+      direction = $mirror_direction[robot.direction]
+      game.add_robot_action(robot, robot.x, robot.y, direction) 
+    when :rotateleft then 
+      direction = $rotate_direction[:left][robot.direction]
+      game.add_robot_action(robot, robot.x, robot.y, direction) 
+    when :rotateright then 
+      direction = $rotate_direction[:right][robot.direction]
+      game.add_robot_action(robot, robot.x, robot.y, direction) 
+    when :moveone then 
+      #game.add
     end
   end
 end
