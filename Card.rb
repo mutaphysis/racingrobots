@@ -13,6 +13,14 @@ class Card
     @type = type
     @priority = priority 
   end
+  
+  def act(game, robot)
+    case @type
+    when :uturn then robot.direction = $mirror_direction[robot.direction]
+    when :rotateleft then robot.direction = $rotate_direction[:left][robot.direction]
+    when :rotateright then robot.direction = $rotate_direction[:right][robot.direction]
+    end
+  end
 end
 
 seed_order.each do |k|  

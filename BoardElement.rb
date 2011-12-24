@@ -9,6 +9,6 @@ class BoardElement
     @direction = direction    
   end
   
-  def act(game, phase)
+  def act(game, turn, phase)
   end  
 end

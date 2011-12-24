@@ -1,4 +1,4 @@
-A Round consists out of 5 turns, defined by the 5 cards chosen by each contestant
+A round consists out of 5 turns, defined by the 5 cards chosen for each robot
 
 Each turn is split into several phases.
 

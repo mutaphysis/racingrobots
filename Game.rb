@@ -25,6 +25,7 @@ end
 
 class Game  
   def initialize()
+    @turn = 0
     @robots = []
     @board = []
     @action_queue = []
@@ -69,7 +70,7 @@ class Game
     phases.sort.map do |phase, items|
       @action_queue = []      
       items.each do |item|
-        item.act(self, phase)        
+        item.act(self, @turn, phase)        
       end
       
       # replace invalid actions       

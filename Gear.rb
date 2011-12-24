@@ -9,7 +9,7 @@ class Gear < BoardElement
     @phases = [500]
   end
   
-  def act(game, phase)
+  def act(game, turn, phase)
     # there can only be one robot here anyway
     robot = game.get_typed_at(@x, @y, Robot).first    
     
