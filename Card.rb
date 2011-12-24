@@ -6,8 +6,17 @@ seed = {:uturn => 6, :rotateleft => 18, :rotateright => 18, :backup => 6, :moveo
 
 $cards = []
 
+class Card
+  attr_reader :type, :priority
+  
+  def initialize(type, priority)
+    @type = type
+    @priority = priority 
+  end
+end
+
 seed_order.each do |k|  
   (0..seed[k]).each do |n|
-    $cards << {:type => k, :priority => ($cards.length * priority_increment + initial_priority)}
+    $cards << Card.new(k, ($cards.length * priority_increment + initial_priority))
   end
 end

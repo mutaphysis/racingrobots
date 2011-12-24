@@ -1,4 +1,5 @@
 require_relative 'utils'
+require_relative 'Card'
 require_relative 'Robot'
 require_relative 'Conveyor'
 require_relative 'Gear'
@@ -14,7 +15,7 @@ def parse_fields(fieldDescription, x, y)
       turnFromRight = !fieldDescription.index('r').nil?
       
       fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
-    when 'G' then        
+    when 'G' then
       rotation = $key_rotation[fieldDescription[1]]
       fields << Gear.new(x, y, rotation ) 
   end
