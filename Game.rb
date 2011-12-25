@@ -28,7 +28,7 @@ class Game
     @turn = 0
     @robots = []
     @board = []
-    @action_queue = []
+    @parallel_action_queue = []
   end
   
   def setup_board(rows)
@@ -68,19 +68,24 @@ class Game
     end    
     
     phases.sort.map do |phase, items|
-      @action_queue = []      
+      @parallel_action_queue = []   
+      @sequential_action_queue = []
+         
       items.each do |item|
         item.act(self, @turn, phase)        
       end
       
-      # replace invalid actions       
+      # sort sequential action by priority
+      @sequential_action_queue.sort! {|x,y| y[:priority] <=> x[:priority] }
+      
+      # replace invalid parallel actions       
       begin
         check_invalid = false
-        @action_queue.combination(2) do |combination|
+        @parallel_action_queue.combination(2) do |combination|
           first = combination[0]
           second = combination[1]
         
-          if first[:x] === second[:x] and first[:y] === second[:y] and first[:priority] === second[:priority] then
+          if first[:x] === second[:x] and first[:y] === second[:y] then
             first[:x] = first[:robot].x
             first[:y] = first[:robot].y
             first[:direction] = first[:robot].direction
@@ -93,12 +98,13 @@ class Game
         end
       end while check_invalid
 
-      @action_queue.sort {|x,y| y[:priority] <=> x[:priority] }
-
-      @action_queue.each do |action|
-        p action[:priority]
+      @parallel_action_queue.each do |action|
         self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
-      end      
+      end
+      @sequential_action_queue.each do |action|
+        p action[:priority]    
+        self.move_robot(action[:robot], action[:distance])
+      end 
     end
     
     self
@@ -112,10 +118,30 @@ class Game
     robot
   end
   
-  def add_robot_action(robot, x, y, direction)
-    @action_queue << {:robot => robot, :priority => 0, :x => x, :y => y, :direction => direction }
-    @action_queue.last
+  def add_parallel_robot_action(robot, x, y, direction)
+    @parallel_action_queue << {:robot => robot, :x => x, :y => y, :direction => direction }
+    @parallel_action_queue.last
   end
+  
+  def add_sequential_robot_action(robot, priority, distance)
+    @sequential_action_queue << {:robot => robot, :priority => priority, :distance => distance }
+    @sequential_action_queue.last
+  end
+  
+  def move_robot(robot, distance)       
+    direction = robot.direction
+    
+    if distance < 0 then 
+      direction = $mirror_direction[direction] 
+    end
+    distance = distance.abs
+    
+    p "move #{distance} #{direction}"
+    
+    new_coord = offset_coordinate(robot.x, robot.y, direction)
+    
+    update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
+  end  
   
   def update_robot(robot, x, y, direction)       
     @board[robot.y][robot.x].delete(robot)        
@@ -125,7 +151,7 @@ class Game
     robot.direction = direction
     
     @board[y][x] << robot
-  end  
+  end
   
   def get_robot(id)
     @robots[id]
