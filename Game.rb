@@ -139,9 +139,8 @@ class Game
     distance.times do
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
       self.push(new_coord[:x], new_coord[:y], direction)
-    end
-    
-    update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
+      update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
+    end  
   end  
   
   def push(x, y, direction)
