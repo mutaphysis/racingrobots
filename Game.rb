@@ -102,7 +102,6 @@ class Game
         self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
       end
       @sequential_action_queue.each do |action|
-        p action[:priority]    
         self.move_robot(action[:robot], action[:distance])
       end 
     end
@@ -134,13 +133,17 @@ class Game
     if distance < 0 then 
       direction = $mirror_direction[direction] 
     end
-    distance = distance.abs
-    
-    p "move #{distance} #{direction}"
+    distance = distance.abs  
     
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      
+      pushed_robot = self.get_typed_at(new_coord[:x], new_coord[:y], Robot).first
+      if not pushed_robot.nil?
+        pushed_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+        update_robot(pushed_robot, pushed_coord[:x], pushed_coord[:y], pushed_robot.direction)
+      end
     end
     
     update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)

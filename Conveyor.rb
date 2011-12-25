@@ -25,7 +25,7 @@ class Conveyor < BoardElement
       direction = robot.direction          
       
       # blocked by a robot 
-      obstacle = game.get_typed_at(new_coord[:x], new_coord[:y], Robot).first      
+      obstacle = game.get_typed_at(new_coord[:x], new_coord[:y], Robot).first
       return unless obstacle.nil?
       
       # if moved onto another conveyor, could be turned
