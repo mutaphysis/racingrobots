@@ -3,6 +3,7 @@ require_relative 'Card'
 require_relative 'Robot'
 require_relative 'Conveyor'
 require_relative 'Gear'
+require_relative 'Pit'
 require_relative 'Pusher'
 require_relative 'BoardElement'
 
@@ -22,7 +23,9 @@ def parse_fields(fieldDescription, x, y)
       fields << Gear.new(x, y, rotation)
     when 'P' then
       direction = $key_direction[fieldDescription[1]]
-      fields << Pusher.new(x, y, direction) 
+      fields << Pusher.new(x, y, direction)       
+    when '_' then
+      fields << Pit.new(x, y)       
   end
     
   fields
@@ -143,7 +146,7 @@ class Game
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
-      # even if this is an edge or a hole, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
+      # even if this is an edge or a pit, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
       self.push(new_coord[:x], new_coord[:y], direction)
       update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
       break if robot.destroyed
@@ -167,6 +170,14 @@ class Game
       robot.destroyed = true
       return
     end         
+    
+    # driving in a pit kills
+    pit = self.get_typed_at(x, y, Pit).first
+    if not pit.nil? 
+      robot.destroyed = true
+      return      
+    end
+    
                             
     robot.x = x
     robot.y = y
