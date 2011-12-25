@@ -8,6 +8,7 @@ require_relative 'BoardElement'
 
 def parse_fields(fieldDescription, x, y)
   fields = []
+  
   case fieldDescription[0]
     when 'C' then    
       express = !fieldDescription.index('*').nil?
@@ -18,7 +19,10 @@ def parse_fields(fieldDescription, x, y)
       fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
     when 'G' then
       rotation = $key_rotation[fieldDescription[1]]
-      fields << Gear.new(x, y, rotation ) 
+      fields << Gear.new(x, y, rotation)
+    when 'P' then
+      direction = $key_direction[fieldDescription[1]]
+      fields << Pusher.new(x, y, direction) 
   end
     
   fields
