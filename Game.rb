@@ -138,7 +138,10 @@ class Game
     
     p "move #{distance} #{direction}"
     
-    new_coord = offset_coordinate(robot.x, robot.y, direction)
+    new_coord = {:x => robot.x, :y => robot.y}
+    distance.times do
+      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+    end
     
     update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
   end  
