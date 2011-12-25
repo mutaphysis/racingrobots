@@ -20,7 +20,7 @@ end
 
 Given /^the (\d+)(?:st|nd|rd|th) robots program is:$/ do |robot_id, table|
   robot = @game.get_robot(robot_id.to_i - 1)
-  program = table.raw[0].collect do |value|
+  program = table.raw[0].collect do |value|    
     values = value.split(":")
     Card.new(values[0].to_sym, values[1].to_i)
   end
@@ -32,9 +32,15 @@ When /^a turn is played$/ do
   @game.step_turn
 end
 
+Then /^the (\d+)(?:st|nd|rd|th) robot is destroyed$/ do |robot_id|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.destroyed.should == true
+end
+
 Then /^the (\d+)(?:st|nd|rd|th) robot is at (\d+), (\d+) facing (\w+)$/ do |robot_id, x, y, facing|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.x.should == x.to_i
   robot.y.should == y.to_i
+  robot.destroyed.should == false
   robot.direction.should === $key_direction[facing[0]]
 end

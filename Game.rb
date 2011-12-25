@@ -157,8 +157,14 @@ class Game
     end    
   end
   
-  def update_robot(robot, x, y, direction)       
-    @board[robot.y][robot.x].delete(robot)        
+  def update_robot(robot, x, y, direction)     
+    @board[robot.y][robot.x].delete(robot)   
+    
+    # driving of the edge kills    
+    if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
+      robot.destroyed = true
+      return
+    end         
                             
     robot.x = x
     robot.y = y
