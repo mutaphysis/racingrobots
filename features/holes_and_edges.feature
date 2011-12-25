@@ -38,6 +38,15 @@ Feature: Holes and edges
       When a turn is played
       Then the 1st robot is destroyed
     
+    Scenario: A robot driving off the edge fast
+      Given there is a board:
+        |  |
+      And there is a robot at 0, 0 facing north
+  	  And the 1st robots program is:
+  		  | movethree:10 |
+      When a turn is played
+      Then the 1st robot is destroyed
+    
     Scenario: A destroyed robot should not act further
       Given there is a board:
         |  |  |  |
