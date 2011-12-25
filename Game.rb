@@ -3,6 +3,7 @@ require_relative 'Card'
 require_relative 'Robot'
 require_relative 'Conveyor'
 require_relative 'Gear'
+require_relative 'Pusher'
 require_relative 'BoardElement'
 
 def parse_fields(fieldDescription, x, y)
