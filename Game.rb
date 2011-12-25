@@ -143,8 +143,10 @@ class Game
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      # even if this is an edge or a hole, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
       self.push(new_coord[:x], new_coord[:y], direction)
       update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
+      break if robot.destroyed
     end  
   end  
   
@@ -157,7 +159,7 @@ class Game
     end    
   end
   
-  def update_robot(robot, x, y, direction)     
+  def update_robot(robot, x, y, direction)          
     @board[robot.y][robot.x].delete(robot)   
     
     # driving of the edge kills    
@@ -178,11 +180,9 @@ class Game
   end
   
   def get_typed_at(x, y, type)    
-    if not @board[y].nil? and not @board[y][x].nil?
-      return @board[y][x].find_all{|item| item.instance_of? type}
-    else
-      return []
-    end
+    return [] if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
+        
+    return @board[y][x].find_all{|item| item.instance_of? type}      
   end
   
   def get_at(x, y)
