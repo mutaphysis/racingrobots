@@ -138,16 +138,20 @@ class Game
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
-      
-      pushed_robot = self.get_typed_at(new_coord[:x], new_coord[:y], Robot).first
-      if not pushed_robot.nil?
-        pushed_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
-        update_robot(pushed_robot, pushed_coord[:x], pushed_coord[:y], pushed_robot.direction)
-      end
+      self.push(new_coord[:x], new_coord[:y], direction)
     end
     
     update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
   end  
+  
+  def push(x, y, direction)
+    pushed_robot = self.get_typed_at(x, y, Robot).first      
+    if not pushed_robot.nil? then
+      pushed_coord = offset_coordinate(x, y, direction)
+      self.push(pushed_coord[:x], pushed_coord[:y], direction)      
+      update_robot(pushed_robot, pushed_coord[:x], pushed_coord[:y], pushed_robot.direction)
+    end    
+  end
   
   def update_robot(robot, x, y, direction)       
     @board[robot.y][robot.x].delete(robot)        

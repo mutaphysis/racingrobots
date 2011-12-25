@@ -13,7 +13,7 @@ Phase 3 - ConveyorBelts
  The normal conveyor belts move 1 space, robots moved to a curve are turned accordingly
 
 Phase 4 - Pusher
- Pushers push
+ Pushers push robots
 
 Phase 5 - Gears
  Robots standing on a gear are turned accordingly

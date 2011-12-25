@@ -104,6 +104,23 @@ Feature: Movement cards
     Then the 1st robot is at 2, 0 facing east
 	  Then the 2nd robot is at 3, 0 facing east
 
+  Scenario: A robot using move is pushing a group of robots
+    Given there is a board:
+      |  |  |  |  |  |
+    And there is a robot at 0, 0 facing east
+	  And there is a robot at 1, 0 facing east
+    And there is a robot at 2, 0 facing east
+	  And the 1st robots program is:
+		  | moveone:10 | moveone:20 | moveone:30 | moveone:40 | moveone:50 |
+    When a turn is played
+    Then the 1st robot is at 1, 0 facing east
+	  Then the 2nd robot is at 2, 0 facing east
+	  Then the 3rd robot is at 3, 0 facing east
+    When a turn is played
+    Then the 1st robot is at 2, 0 facing east
+	  Then the 2nd robot is at 3, 0 facing east
+	  Then the 3rd robot is at 4, 0 facing east
+
   Scenario: Robot actions are resolved by following program priorities
     Given there is a board:
         |  |  |  |
