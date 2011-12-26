@@ -37,6 +37,11 @@ Then /^the (\d+)(?:st|nd|rd|th) robot is destroyed$/ do |robot_id|
   robot.destroyed.should == true
 end
 
+Then /^the (\d+)(?:st|nd|rd|th) robot has taken (\d+) damage$/ do |robot_id, damage_taken|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.damage_taken.should == damage_taken.to_i
+end
+
 Then /^the (\d+)(?:st|nd|rd|th) robot is at (\d+), (\d+) facing (\w+)$/ do |robot_id, x, y, facing|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.x.should == x.to_i

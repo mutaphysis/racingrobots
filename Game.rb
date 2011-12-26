@@ -2,6 +2,7 @@ require_relative 'utils'
 require_relative 'Card'
 require_relative 'Robot'
 require_relative 'Conveyor'
+require_relative 'Laser'
 require_relative 'Gear'
 require_relative 'Pit'
 require_relative 'Pusher'
@@ -23,7 +24,10 @@ def parse_fields(fieldDescription, x, y)
       fields << Gear.new(x, y, rotation)
     when 'P' then
       direction = $key_direction[fieldDescription[1]]
-      fields << Pusher.new(x, y, direction)       
+      fields << Pusher.new(x, y, direction)  
+    when 'L' then
+      direction = $key_direction[fieldDescription[1]]
+      fields << Laser.new(x, y, direction)         
     when '_' then
       fields << Pit.new(x, y)       
   end

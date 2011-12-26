@@ -19,10 +19,11 @@ Phase 5 - Gears
  Robots standing on a gear are turned accordingly
 
 Phase 6 - Lasers
- Wall lasers and robots fire lasers in there view direction, lasers are blocked by walls and robots
+ Wall lasers and robots fire lasers in their view direction, lasers are blocked by walls and robots
  Robots hit by a laser gain one damage token
- Robots that have accumulated 9 damage tokens are removed from the board, one life is substracted and the robot 
- restarts from his save marker with two damage tokens beginning of next turn
+ Robots that have accumulated 9 damage tokens are removed from the board, one life is substracted 
+ 
+ The robot restarts from his save marker with two damage tokens beginning of next turn
  
 Phase 7 - Save phase
  Any robot touching a wrench field is saved, ie his save marker is placed onto this field
