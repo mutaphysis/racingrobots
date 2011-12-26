@@ -119,7 +119,7 @@ class Game
       end
       
       @robots.each do |robot|
-        if not robot.destroyed and robot.damage_taken > 9
+        if not robot.destroyed and robot.damage_taken >= 9
           robot.destroyed = true
           @board[robot.y][robot.x].delete(robot)
         end
@@ -198,13 +198,13 @@ class Game
   def update_robot(robot, x, y, direction)          
     @board[robot.y][robot.x].delete(robot)
     
-    # driving of the edge kills    
+    # driving of the edge destroys    
     if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
       robot.destroyed = true
       return
     end         
     
-    # driving in a pit kills
+    # driving in a pit destroys
     pit = self.get_typed_at(x, y, Pit).first
     if not pit.nil? 
       robot.destroyed = true

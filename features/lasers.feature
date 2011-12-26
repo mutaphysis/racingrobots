@@ -69,7 +69,7 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot has taken 4 damage
       
-  Scenario: Nine damage will kill a robot
+  Scenario: Nine damage will destroy a robot
     # But in one phase no damage overflow will carry through other robots behind it
     Given there is a board:
       | Le | Le |    |
@@ -98,6 +98,31 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot has taken 0 damage
     Then the 2nd robot has taken 2 damage
+      
+  Scenario: Robots fire lasers at each other
+    Given there is a board:
+      |  |  |
+    And there is a robot at 0, 0 facing east
+    And there is a robot at 1, 0 facing west
+    When a turn is played
+    Then the 1st robot has taken 1 damage
+    Then the 2nd robot has taken 1 damage
+    When a turn is played
+    Then the 1st robot has taken 2 damage
+    Then the 2nd robot has taken 2 damage
+      
+  Scenario: Robots that are destroyed will no longer fire lasers
+    Given there is a board:
+      |  |  |
+    And there is a robot at 0, 0 facing east
+    And the 1st robot already has taken 8 damage
+    And there is a robot at 1, 0 facing west
+    When a turn is played
+    Then the 1st robot has taken 9 damage
+    Then the 2nd robot has taken 1 damage
+    When a turn is played
+    Then the 2nd robot has taken 1 damage
+
 
 
     

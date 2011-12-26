@@ -1,5 +1,5 @@
 Feature: Holes and edges
-  Falling into pits or driving off edges will kill a robot.
+  Falling into pits or driving off edges will destroy a robot.
   This will happen when a robot is pushed or conveyed into one as well.
 
   Scenario: A robot driving off the edge east

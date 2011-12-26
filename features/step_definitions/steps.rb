@@ -28,6 +28,11 @@ Given /^the (\d+)(?:st|nd|rd|th) robots program is:$/ do |robot_id, table|
   robot.program = program
 end
 
+Given /^the (\d+)(?:st|nd|rd|th) robot already has taken (\d+) damage$/ do |robot_id, damage_taken|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.damage_taken = damage_taken.to_i
+end
+
 When /^a turn is played$/ do
   @game.step_turn
 end
