@@ -113,9 +113,17 @@ class Game
       @parallel_action_queue.each do |action|
         self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
       end
+      
       @sequential_action_queue.each do |action|
         self.move_robot(action[:robot], action[:distance])
-      end 
+      end
+      
+      @robots.each do |robot|
+        if not robot.destroyed and robot.damage_taken > 9
+          robot.destroyed = true
+          @board[robot.y][robot.x].delete(robot)
+        end
+      end
     end
     
     self
@@ -184,7 +192,7 @@ class Game
   end
   
   def update_robot(robot, x, y, direction)          
-    @board[robot.y][robot.x].delete(robot)   
+    @board[robot.y][robot.x].delete(robot)
     
     # driving of the edge kills    
     if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
