@@ -24,6 +24,8 @@ class Conveyor < BoardElement
       new_coord = offset_coordinate(robot.x, robot.y, @direction)
       direction = robot.direction
       
+      return if game.check_blocked(@x, @y, new_coord[:x], new_coord[:y], @direction)
+      
       # if moved onto another conveyor, could be turned
       conveyor = game.first_of_at(new_coord[:x], new_coord[:y], Conveyor)
       if not conveyor.nil? then
