@@ -156,6 +156,23 @@ class Game
       break if robot.destroyed
     end  
   end  
+    
+  def shoot_laser(x, y, direction) 
+    new_coord = {:x => x, :y => y}    
+    target = nil
+    
+    begin      
+      break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length             
+      
+      target = get_typed_at(new_coord[:x], new_coord[:y], Robot).first
+      
+      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+    end while target.nil?
+    
+    if target then
+      target.damage_taken = target.damage_taken + 1
+    end
+  end  
   
   def push(x, y, direction)
     pushed_robot = self.get_typed_at(x, y, Robot).first      
@@ -181,7 +198,6 @@ class Game
       robot.destroyed = true
       return      
     end
-    
                             
     robot.x = x
     robot.y = y
