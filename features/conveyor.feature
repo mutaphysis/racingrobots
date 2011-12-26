@@ -149,6 +149,21 @@ Feature: Conveyor board element
     And there is a robot at 0, 0 facing east
     When a turn is played  
     Then the 1st robot is at 2, 0 facing east
+        
+  Scenario: A group of robots on a conveyor belt
+    Given there is a board:
+      | Ce | Ce | Ce |  |
+    And there is a robot at 0, 0 facing west
+    And there is a robot at 1, 0 facing west
+    And there is a robot at 2, 0 facing west
+    When a turn is played
+    Then the 1st robot is at 1, 0 facing west
+    Then the 1st robot is at 2, 0 facing west
+    Then the 1st robot is at 3, 0 facing west
+    When a turn is played
+    Then the 1st robot is at 1, 0 facing west
+    Then the 1st robot is at 2, 0 facing west
+    Then the 1st robot is at 3, 0 facing west
     
     
     

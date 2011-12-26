@@ -9,31 +9,35 @@ require_relative 'Pusher'
 require_relative 'Wall'
 require_relative 'BoardElement'
 
-def parse_fields(fieldDescription, x, y)
+def parse_fields(description, x, y)
   fields = []
   
-  case fieldDescription[0]
-    when 'C' then    
-      express = !fieldDescription.index('*').nil?
-      direction = $key_direction[fieldDescription[1]]
-      turnFromLeft = !fieldDescription.index('l').nil?
-      turnFromRight = !fieldDescription.index('r').nil?
+  descriptions = description.split(' ')
+  
+  descriptions.each do |fieldDescription|
+    case fieldDescription[0]
+      when 'C' then    
+        express = !fieldDescription.index('*').nil?
+        direction = $key_direction[fieldDescription[1]]
+        turnFromLeft = !fieldDescription.index('l').nil?
+        turnFromRight = !fieldDescription.index('r').nil?
       
-      fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
-    when 'G' then
-      rotation = $key_rotation[fieldDescription[1]]
-      fields << Gear.new(x, y, rotation)
-    when 'P' then
-      direction = $key_direction[fieldDescription[1]]
-      fields << Pusher.new(x, y, direction)  
-    when 'L' then
-      direction = $key_direction[fieldDescription[1]]
-      fields << Laser.new(x, y, direction)  
-    when 'W' then
-      direction = $key_direction[fieldDescription[1]]
-      fields << Wall.new(x, y, direction)          
-    when '_' then
-      fields << Pit.new(x, y)       
+        fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
+      when 'G' then
+        rotation = $key_rotation[fieldDescription[1]]
+        fields << Gear.new(x, y, rotation)
+      when 'P' then
+        direction = $key_direction[fieldDescription[1]]
+        fields << Pusher.new(x, y, direction)  
+      when 'L' then
+        direction = $key_direction[fieldDescription[1]]
+        fields << Laser.new(x, y, direction)  
+      when 'W' then
+        direction = $key_direction[fieldDescription[1]]
+        fields << Wall.new(x, y, direction)          
+      when '_' then
+        fields << Pit.new(x, y)       
+    end
   end
     
   fields
@@ -243,7 +247,7 @@ class Game
     if not pit.nil? 
       robot.destroyed = true
       return      
-    end
+    end    
                             
     robot.x = x
     robot.y = y

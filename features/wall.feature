@@ -87,3 +87,11 @@ Feature: Walls
     When a turn is played
     Then the 1st robot is at 0, 0 facing east
     Then the 2nd robot is at 1, 0 facing east
+      
+  Scenario: A conveyor should not convey through walls
+    Given there is a board:
+      | Ce We | Ce |
+    And there is a robot at 0, 0 facing east
+    When a turn is played
+    Then the 1st robot is at 0, 0 facing east
+
