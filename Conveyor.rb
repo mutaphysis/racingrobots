@@ -22,11 +22,7 @@ class Conveyor < BoardElement
     
     if not robot.nil? then
       new_coord = offset_coordinate(robot.x, robot.y, @direction)
-      direction = robot.direction          
-      
-      # blocked by a robot 
-      obstacle = game.first_of_at(new_coord[:x], new_coord[:y], Robot)
-      return unless obstacle.nil?
+      direction = robot.direction
       
       # if moved onto another conveyor, could be turned
       conveyor = game.first_of_at(new_coord[:x], new_coord[:y], Conveyor)

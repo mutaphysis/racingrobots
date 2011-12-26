@@ -98,9 +98,26 @@ class Game
       # sort sequential action by priority
       @sequential_action_queue.sort! {|x,y| y[:priority] <=> x[:priority] }
       
-      # replace invalid parallel actions       
+      # get robots off the board
+      @parallel_action_queue.each do |action|
+        robot = action[:robot]                
+        @board[robot.y][robot.x].delete(robot)         
+      end      
+      
+      # undo action that move on a non moving robot
+      @parallel_action_queue.each do |action|
+        robot = first_of_at(action[:x], action[:y], Robot)
+        
+        if not robot.nil?
+          action[:x] = action[:robot].x
+          action[:y] = action[:robot].y
+          action[:direction] = action[:robot].direction        
+        end
+      end
+      
+      # undo all invalid parallel actions       
       begin
-        check_invalid = false
+        check_invalid = false        
         @parallel_action_queue.combination(2) do |combination|
           first = combination[0]
           second = combination[1]
@@ -114,7 +131,7 @@ class Game
             second[:y] = second[:robot].y
             second[:direction] = second[:robot].direction            
             check_invalid = true         
-          end
+          end                  
         end
       end while check_invalid
 

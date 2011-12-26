@@ -158,12 +158,12 @@ Feature: Conveyor board element
     And there is a robot at 2, 0 facing west
     When a turn is played
     Then the 1st robot is at 1, 0 facing west
-    Then the 1st robot is at 2, 0 facing west
-    Then the 1st robot is at 3, 0 facing west
+    Then the 2nd robot is at 2, 0 facing west
+    Then the 3rd robot is at 3, 0 facing west
     When a turn is played
     Then the 1st robot is at 1, 0 facing west
-    Then the 1st robot is at 2, 0 facing west
-    Then the 1st robot is at 3, 0 facing west
+    Then the 2nd robot is at 2, 0 facing west
+    Then the 3rd robot is at 3, 0 facing west
     
     
     
