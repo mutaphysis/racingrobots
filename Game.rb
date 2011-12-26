@@ -161,9 +161,11 @@ class Game
     
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
-      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)   
+      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)         
+      blocked = self.check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction)      
+      break if blocked
       
-      #check_blocked
+      new_coord = next_coord
                            
       # even if this is an edge or a pit, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
       self.push(new_coord[:x], new_coord[:y], direction)
@@ -172,8 +174,29 @@ class Game
     end  
   end  
   
-  def check_blocked(x, y, x2, y2)
-    
+  def check_blocked(x, y, x2, y2, direction)        
+    # check for a wall preventing leaving the current field
+    wall = @board[y][x].find { |item| item.instance_of? Wall and  item.direction == direction }      
+    return true if not wall.nil?
+          
+    # if after an edge, no need to continue looking for things there
+    return false if x2 < 0 or y2 < 0 or y2 >= @board.length or x2 >= @board[y2].length  
+        
+    # check for a wall preventing entering the next field
+    direction2 = $mirror_direction[direction]
+    wall = @board[y2][x2].find { |item| item.instance_of? Wall and item.direction == direction2 }
+    return true if not wall.nil?
+        
+    # if there is a robot on the next field, we might push it into a wall
+    robot = @board[y2][x2].find { |item| item.instance_of? Robot }
+
+    if not robot.nil?      
+      next_coord = offset_coordinate(x2, y2, direction)         
+      # continue checking recursively 
+      return self.check_blocked(x2, y2, next_coord[:x], next_coord[:y], direction)
+    end
+
+    return false
   end
     
   def shoot_laser(x, y, direction, options=nil) 
@@ -236,7 +259,7 @@ class Game
   def first_of_at(x, y, type)    
     return nil if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
         
-    return @board[y][x].find { |item| item.instance_of? type }     
+    return @board[y][x].find { |item| item.instance_of? type }
   end
   
   def get_at(x, y)
