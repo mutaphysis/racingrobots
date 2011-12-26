@@ -5,10 +5,10 @@ Each turn is split into several phases.
 Phase 1 - Movement
  The robots are moved according to their turn cards, starting with the highest priority
 
-Phase 2 - Express ConveyorBelts
- The express conveyorBelts move 1 space, robots moved to a curve are turned accordingly
+Phase 2 - Express Conveyors
+ The express conveyor belts move 1 space, robots moved to a curve are turned accordingly
 
-Phase 3 - ConveyorBelts
+Phase 3 - Conveyors
  The express conveyor belts move 1 space, robots moved to a curve are turned accordingly
  The normal conveyor belts move 1 space, robots moved to a curve are turned accordingly
 
@@ -23,7 +23,7 @@ Phase 6 - Lasers
  Robots hit by a laser gain one damage token
  Robots that have accumulated 9 damage tokens are removed from the board, one life is substracted 
  
- The robot restarts from his save marker with two damage tokens beginning of next turn
+ The robot restarts from his save marker with two damage tokens beginning of next round
  
 Phase 7 - Save phase
  Any robot touching a wrench field is saved, ie his save marker is placed onto this field
