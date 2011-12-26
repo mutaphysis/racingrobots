@@ -165,9 +165,13 @@ class Game
     end  
   end  
     
-  def shoot_laser(x, y, direction) 
+  def shoot_laser(x, y, direction, options=nil) 
     new_coord = {:x => x, :y => y}    
     target = nil
+    
+    if options == :exclude_first
+      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+    end
     
     begin      
       break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length             

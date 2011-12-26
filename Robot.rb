@@ -20,7 +20,10 @@ class Robot < BoardElement
     case phase
     when 100 then
       run_program(game, turn)
+    when 600 then
+      game.shoot_laser(@x, @y, @direction, :exclude_first)        
     end
+    
   end    
   
   def run_program(game, turn)
