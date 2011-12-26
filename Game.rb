@@ -6,6 +6,7 @@ require_relative 'Laser'
 require_relative 'Gear'
 require_relative 'Pit'
 require_relative 'Pusher'
+require_relative 'Wall'
 require_relative 'BoardElement'
 
 def parse_fields(fieldDescription, x, y)
@@ -27,7 +28,10 @@ def parse_fields(fieldDescription, x, y)
       fields << Pusher.new(x, y, direction)  
     when 'L' then
       direction = $key_direction[fieldDescription[1]]
-      fields << Laser.new(x, y, direction)         
+      fields << Laser.new(x, y, direction)  
+    when 'W' then
+      direction = $key_direction[fieldDescription[1]]
+      fields << Wall.new(x, y, direction)          
     when '_' then
       fields << Pit.new(x, y)       
   end
@@ -157,13 +161,20 @@ class Game
     
     new_coord = {:x => robot.x, :y => robot.y}
     distance.times do
-      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)   
+      
+      #check_blocked
+                           
       # even if this is an edge or a pit, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
       self.push(new_coord[:x], new_coord[:y], direction)
       update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
       break if robot.destroyed
     end  
   end  
+  
+  def check_blocked(x, y, x2, y2)
+    
+  end
     
   def shoot_laser(x, y, direction, options=nil) 
     new_coord = {:x => x, :y => y}    
@@ -176,7 +187,7 @@ class Game
     begin      
       break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length             
       
-      target = get_typed_at(new_coord[:x], new_coord[:y], Robot).first
+      target = first_of_at(new_coord[:x], new_coord[:y], Robot)
       
       new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
     end while target.nil?
@@ -187,7 +198,7 @@ class Game
   end  
   
   def push(x, y, direction)
-    pushed_robot = self.get_typed_at(x, y, Robot).first      
+    pushed_robot = self.first_of_at(x, y, Robot)      
     if not pushed_robot.nil? then
       pushed_coord = offset_coordinate(x, y, direction)
       self.push(pushed_coord[:x], pushed_coord[:y], direction)      
@@ -205,7 +216,7 @@ class Game
     end         
     
     # driving in a pit destroys
-    pit = self.get_typed_at(x, y, Pit).first
+    pit = self.first_of_at(x, y, Pit)
     if not pit.nil? 
       robot.destroyed = true
       return      
@@ -222,10 +233,10 @@ class Game
     @robots[id]
   end
   
-  def get_typed_at(x, y, type)    
-    return [] if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
+  def first_of_at(x, y, type)    
+    return nil if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length 
         
-    return @board[y][x].find_all{|item| item.instance_of? type}      
+    return @board[y][x].find { |item| item.instance_of? type }     
   end
   
   def get_at(x, y)

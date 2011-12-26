@@ -18,18 +18,18 @@ class Conveyor < BoardElement
   
   def act(game, turn, phase)
     # there can only be one robot here anyway
-    robot = game.get_typed_at(@x, @y, Robot).first    
+    robot = game.first_of_at(@x, @y, Robot)    
     
     if not robot.nil? then
       new_coord = offset_coordinate(robot.x, robot.y, @direction)
       direction = robot.direction          
       
       # blocked by a robot 
-      obstacle = game.get_typed_at(new_coord[:x], new_coord[:y], Robot).first
+      obstacle = game.first_of_at(new_coord[:x], new_coord[:y], Robot)
       return unless obstacle.nil?
       
       # if moved onto another conveyor, could be turned
-      conveyor = game.get_typed_at(new_coord[:x], new_coord[:y], Conveyor).first
+      conveyor = game.first_of_at(new_coord[:x], new_coord[:y], Conveyor)
       if not conveyor.nil? then
         turn = conveyor.get_turn_from(@direction)
         

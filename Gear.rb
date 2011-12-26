@@ -11,7 +11,7 @@ class Gear < BoardElement
   
   def act(game, turn, phase)
     # there can only be one robot here anyway
-    robot = game.get_typed_at(@x, @y, Robot).first    
+    robot = game.first_of_at(@x, @y, Robot)    
     
     if not robot.nil? then    
       direction = $rotate_direction[@rotation][robot.direction]   
