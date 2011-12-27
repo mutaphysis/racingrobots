@@ -43,12 +43,55 @@ def parse_fields(description, x, y)
   fields
 end
 
+class SequentialAction
+  attr_reader :priority
+  def initialize(robot, priority, distance)
+    @robot = robot
+    @priority = priority
+    @distance = distance
+  end
+  
+  def act(game)
+    game.move_robot(@robot, @distance)    
+  end
+end
+
+class ParallelAction
+  attr_reader :robot, :x, :y
+  def initialize(robot, x, y, direction)
+    @robot = robot
+    @x = x
+    @y = y
+    @direction = direction
+  end
+  
+  def undo()
+    @x = @robot.x
+    @y = @robot.y
+    @direction = @robot.direction   
+  end
+  
+  def act(game)
+    game.update_robot(@robot, @x, @y, @direction) 
+  end
+  
+  def ==(object)
+    object.equal?(self) ||
+    ( object.instance_of?(self.class) &&
+      object.x == @x &&
+      object.y == @y )
+  end
+end
+
+
 class Game  
   def initialize()
     @turn = 0
     @robots = []
     @board = []
+    
     @parallel_action_queue = []
+    @sequential_action_queue = []
   end
   
   def setup_board(rows)
@@ -95,23 +138,18 @@ class Game
         item.act(self, @turn, phase)        
       end
       
-      # sort sequential action by priority
-      @sequential_action_queue.sort! {|x,y| y[:priority] <=> x[:priority] }
-      
       # get robots off the board
       @parallel_action_queue.each do |action|
-        robot = action[:robot]                
+        robot = action.robot
         @board[robot.y][robot.x].delete(robot)         
       end      
       
       # undo action that move on a non moving robot
       @parallel_action_queue.each do |action|
-        robot = first_of_at(action[:x], action[:y], Robot)
+        robot = first_of_at(action.x, action.y, Robot)
         
         if not robot.nil?
-          action[:x] = action[:robot].x
-          action[:y] = action[:robot].y
-          action[:direction] = action[:robot].direction        
+          action.undo()   
         end
       end
       
@@ -122,25 +160,23 @@ class Game
           first = combination[0]
           second = combination[1]
         
-          if first[:x] === second[:x] and first[:y] === second[:y] then
-            first[:x] = first[:robot].x
-            first[:y] = first[:robot].y
-            first[:direction] = first[:robot].direction
-
-            second[:x] = second[:robot].x
-            second[:y] = second[:robot].y
-            second[:direction] = second[:robot].direction            
+          # action that move to the same position should be reversed
+          if first == second then
+            first.undo()
+            second.undo()         
             check_invalid = true         
           end                  
         end
       end while check_invalid
 
       @parallel_action_queue.each do |action|
-        self.update_robot(action[:robot], action[:x], action[:y], action[:direction])        
+        action.act(self)       
       end
       
+      # sort sequential action by priority
+      @sequential_action_queue.sort! {|a1, a2| a2.priority <=> a1.priority }      
       @sequential_action_queue.each do |action|
-        self.move_robot(action[:robot], action[:distance])
+        action.act(self)
       end
       
       @robots.each do |robot|
@@ -163,12 +199,12 @@ class Game
   end
   
   def add_parallel_robot_action(robot, x, y, direction)
-    @parallel_action_queue << {:robot => robot, :x => x, :y => y, :direction => direction }
+    @parallel_action_queue << ParallelAction.new(robot, x, y, direction)
     @parallel_action_queue.last
   end
   
   def add_sequential_robot_action(robot, priority, distance)
-    @sequential_action_queue << {:robot => robot, :priority => priority, :distance => distance }
+    @sequential_action_queue << SequentialAction.new(robot, priority, distance)
     @sequential_action_queue.last
   end
   
