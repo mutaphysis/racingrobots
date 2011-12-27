@@ -180,17 +180,17 @@ class Game
     end
     distance = distance.abs  
     
-    new_coord = {:x => robot.x, :y => robot.y}
+    new_coord = Point.new(robot.x, robot.y)
     distance.times do
-      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)         
-      blocked = self.check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction)      
+      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)         
+      blocked = self.check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction)      
       break if blocked
       
       new_coord = next_coord
                            
       # even if this is an edge or a pit, we can push on it even if the current robot will die there, anything else reached this new_coord is already dead
-      self.push(new_coord[:x], new_coord[:y], direction)
-      update_robot(robot, new_coord[:x], new_coord[:y], robot.direction)
+      self.push(new_coord.x, new_coord.y, direction)
+      update_robot(robot, new_coord.x, new_coord.y, robot.direction)
       break if robot.destroyed
     end  
   end  
@@ -215,7 +215,7 @@ class Game
       if not robot.nil?      
         next_coord = offset_coordinate(x2, y2, direction)         
         # continue checking recursively 
-        return self.check_blocked(x2, y2, next_coord[:x], next_coord[:y], direction)
+        return self.check_blocked(x2, y2, next_coord.x, next_coord.y, direction)
       end
     end
 
@@ -223,23 +223,23 @@ class Game
   end
     
   def shoot_laser(x, y, direction, options=nil) 
-    new_coord = {:x => x, :y => y}    
+    new_coord = Point.new(x, y)    
     target = nil
     
     if options == :exclude_first
-      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
-      return if check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction, :no_recursive)
+      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
+      return if check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction, :no_recursive)
       new_coord = next_coord
     end
     
     begin      
-      break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length                 
+      break if new_coord.x < 0 or new_coord.y < 0 or new_coord.y >= @board.length or new_coord.x >= @board[new_coord.y].length                 
 
-      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
       
-      break if check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction, :no_recursive)
+      break if check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction, :no_recursive)
       
-      target = first_of_at(new_coord[:x], new_coord[:y], Robot)                
+      target = first_of_at(new_coord.x, new_coord.y, Robot)                
       new_coord = next_coord
     end while target.nil?
     
@@ -252,8 +252,8 @@ class Game
     pushed_robot = self.first_of_at(x, y, Robot)      
     if not pushed_robot.nil? then
       pushed_coord = offset_coordinate(x, y, direction)
-      self.push(pushed_coord[:x], pushed_coord[:y], direction)      
-      update_robot(pushed_robot, pushed_coord[:x], pushed_coord[:y], pushed_robot.direction)
+      self.push(pushed_coord.x, pushed_coord.y, direction)      
+      update_robot(pushed_robot, pushed_coord.x, pushed_coord.y, pushed_robot.direction)
     end    
   end
   

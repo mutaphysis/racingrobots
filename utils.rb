@@ -4,6 +4,14 @@ $mirror_direction = {:west => :east, :north => :south, :east => :west, :south =>
 $rotate_direction = { :right => {:west => :north, :north => :east, :east => :south, :south => :west }, 
                       :left  => {:west => :south, :south => :east, :east => :north, :north => :west }}
 
+class Point
+  attr_accessor :x, :y
+  def initialize(x, y)
+    @x = x
+    @y = y
+  end
+end
+
 def offset_coordinate(x, y, direction)
   case direction
     when :east then
@@ -17,5 +25,5 @@ def offset_coordinate(x, y, direction)
     else
   end
   
-  { :x => x, :y => y }
+  Point.new(x, y)
 end
