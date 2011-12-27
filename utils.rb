@@ -15,13 +15,13 @@ end
 def offset_coordinate(x, y, direction)
   case direction
     when :east then
-      x = x + 1
+      x += 1
     when :west then
-      x = x - 1
+      x -= 1
     when :north then          
-      y = y - 1
+      y -= 1
     when :south then          
-      y = y + 1
+      y += 1
     else
   end
   

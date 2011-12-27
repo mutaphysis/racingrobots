@@ -118,6 +118,13 @@ class Game
     self
   end
   
+  def step_round
+    5.times do
+      self.step_turn()
+      @turn += 1
+    end
+  end
+  
   def step_turn
     phases = {};
         
@@ -286,7 +293,7 @@ class Game
     end while target.nil?
     
     if target then
-      target.damage_taken = target.damage_taken + 1
+      target.damage_taken += 1
     end
   end  
   
