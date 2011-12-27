@@ -94,4 +94,22 @@ Feature: Walls
     And there is a robot at 0, 0 facing east
     When a turn is played
     Then the 1st robot is at 0, 0 facing east
+      
+  Scenario: A laser should not fire through walls
+    Given there is a board:
+      | Le | We Ww | Lw |
+    And there is a robot at 1, 0 facing east
+    When a turn is played
+    Then the 1st robot has taken 0 damage
+      
+  Scenario: A robot should not fire through walls
+    Given there is a board:
+      |  | We Ww |  |
+    And there is a robot at 0, 0 facing east
+    And there is a robot at 1, 0 facing east
+    And there is a robot at 2, 0 facing west
+    When a turn is played
+    Then the 1st robot has taken 0 damage
+    Then the 2nd robot has taken 0 damage
+    Then the 3rd robot has taken 0 damage    
 

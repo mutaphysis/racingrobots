@@ -195,7 +195,7 @@ class Game
     end  
   end  
   
-  def check_blocked(x, y, x2, y2, direction)        
+  def check_blocked(x, y, x2, y2, direction, mode=nil)        
     # check for a wall preventing leaving the current field
     wall = @board[y][x].find { |item| item.instance_of? Wall and  item.direction == direction }      
     return true if not wall.nil?
@@ -207,14 +207,16 @@ class Game
     direction2 = $mirror_direction[direction]
     wall = @board[y2][x2].find { |item| item.instance_of? Wall and item.direction == direction2 }
     return true if not wall.nil?
-        
-    # if there is a robot on the next field, we might push it into a wall
-    robot = @board[y2][x2].find { |item| item.instance_of? Robot }
+      
+    if mode != :no_recursive then
+      # if there is a robot on the next field, we might push it into a wall
+      robot = @board[y2][x2].find { |item| item.instance_of? Robot }
 
-    if not robot.nil?      
-      next_coord = offset_coordinate(x2, y2, direction)         
-      # continue checking recursively 
-      return self.check_blocked(x2, y2, next_coord[:x], next_coord[:y], direction)
+      if not robot.nil?      
+        next_coord = offset_coordinate(x2, y2, direction)         
+        # continue checking recursively 
+        return self.check_blocked(x2, y2, next_coord[:x], next_coord[:y], direction)
+      end
     end
 
     return false
@@ -225,15 +227,20 @@ class Game
     target = nil
     
     if options == :exclude_first
-      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      return if check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction, :no_recursive)
+      new_coord = next_coord
     end
     
     begin      
-      break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length             
+      break if new_coord[:x] < 0 or new_coord[:y] < 0 or new_coord[:y] >= @board.length or new_coord[:x] >= @board[new_coord[:y]].length                 
+
+      next_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
       
-      target = first_of_at(new_coord[:x], new_coord[:y], Robot)
+      break if check_blocked(new_coord[:x], new_coord[:y], next_coord[:x], next_coord[:y], direction, :no_recursive)
       
-      new_coord = offset_coordinate(new_coord[:x], new_coord[:y], direction)
+      target = first_of_at(new_coord[:x], new_coord[:y], Robot)                
+      new_coord = next_coord
     end while target.nil?
     
     if target then
