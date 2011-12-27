@@ -8,6 +8,7 @@ require_relative 'Pit'
 require_relative 'Pusher'
 require_relative 'Wall'
 require_relative 'BoardElement'
+require_relative 'RepairSite'
 
 def parse_fields(description, x, y)
   fields = []
@@ -36,7 +37,9 @@ def parse_fields(description, x, y)
         direction = $key_direction[fieldDescription[1]]
         fields << Wall.new(x, y, direction)          
       when '_' then
-        fields << Pit.new(x, y)       
+        fields << Pit.new(x, y)          
+      when 'R' then
+        fields << RepairSite.new(x, y)         
     end
   end
     

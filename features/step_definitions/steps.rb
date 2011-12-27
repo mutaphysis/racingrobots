@@ -37,6 +37,17 @@ When /^a turn is played$/ do
   @game.step_turn
 end
 
+Then /^the (\d+)(?:st|nd|rd|th) robot is not saved$/ do |robot_id|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.saved_at.should == nil
+end
+
+Then /^the (\d+)st robot is saved at (\d+), (\d+)$/ do |robot_id, x, y|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.saved_at.x.should == x.to_i
+  robot.saved_at.y.should == y.to_i
+end
+
 Then /^the (\d+)(?:st|nd|rd|th) robot is destroyed$/ do |robot_id|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.destroyed.should == true
