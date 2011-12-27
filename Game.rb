@@ -45,14 +45,20 @@ end
 
 class SequentialAction
   attr_reader :priority
-  def initialize(robot, priority, distance)
+  def initialize(robot, priority, distance, direction)
     @robot = robot
     @priority = priority
     @distance = distance
+    @direction = direction
   end
   
   def act(game)
-    game.move_robot(@robot, @distance)    
+    if @distance != 0
+      game.move_robot(@robot, @distance) 
+    end
+    if not @direction.nil?
+      game.update_robot(@robot, @robot.x, @robot.y, @direction)    
+    end
   end
 end
 
@@ -153,7 +159,7 @@ class Game
         end
       end
       
-      # undo all invalid parallel actions       
+      # undo all invalid (moving two robots to the same position) parallel actions       
       begin
         check_invalid = false        
         @parallel_action_queue.combination(2) do |combination|
@@ -203,8 +209,8 @@ class Game
     @parallel_action_queue.last
   end
   
-  def add_sequential_robot_action(robot, priority, distance)
-    @sequential_action_queue << SequentialAction.new(robot, priority, distance)
+  def add_sequential_robot_action(robot, priority, distance, direction=nil)
+    @sequential_action_queue << SequentialAction.new(robot, priority, distance, direction)
     @sequential_action_queue.last
   end
   

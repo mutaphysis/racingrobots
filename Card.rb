@@ -18,13 +18,13 @@ class Card
     case @type
     when :uturn then 
       direction = $mirror_direction[robot.direction]
-      game.add_parallel_robot_action(robot, robot.x, robot.y, direction) 
+      game.add_sequential_robot_action(robot, @priority, 0, direction)
     when :rotateleft then 
       direction = $rotate_direction[:left][robot.direction]
-      game.add_parallel_robot_action(robot, robot.x, robot.y, direction) 
+      game.add_sequential_robot_action(robot, @priority, 0, direction)
     when :rotateright then 
       direction = $rotate_direction[:right][robot.direction]
-      game.add_parallel_robot_action(robot, robot.x, robot.y, direction)  
+      game.add_sequential_robot_action(robot, @priority, 0, direction)
     when :backup then 
       game.add_sequential_robot_action(robot, @priority, -1) 
     when :moveone then 
