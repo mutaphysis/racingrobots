@@ -7,13 +7,15 @@ require 'json'
 # only in dev mode
 require "sinatra/reloader"
 
+require_relative 'Game'
+
 class StoredGame
     include DataMapper::Resource
     
     property :id,     Serial
     property :title,  String, :length => 255, :default => "Unnamed game"
-    property :board,  Object, :lazy => true  
-    
+    property :board,  Object, :lazy => true 
+    # todo connection between players & robots, roles
 end
 
 configure do
@@ -37,6 +39,7 @@ get '/new_game' do
     
     game = StoredGame.new()
     game.title = "Katzenjammer"
+    game.board = Game.new()
         
     halt(500, "Game was not created #{game.errors.inspect}") unless game.save
     
@@ -53,6 +56,18 @@ get '/games' do
     
     results.to_json
 end
+
+get '/games/:id' do    
+    content_type 'application/json'
+
+    id = params[:id].to_i    
+    game = StoredGame.get(id)
+        
+    halt(404, 'Game not found') if game.nil?    
+    
+    "#{game.title} #{game.board}"
+end
+
 
 # 404 handler
 not_found do
