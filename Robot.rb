@@ -15,16 +15,7 @@ class Robot < BoardElement
         
     @phases = [100, 600, 700]
   end
-
-  def marshal_dump
-    super() + [@id, @program, @destroyed, @damage_taken, @saved_at, @phases]
-  end
-
-  def marshal_load(data)
-    super(data)
-    @id, @program, @destroyed, @damage_taken, @saved_at, @phases = data.slice!(0, 6)
-  end
-
+  
   def act(game, turn, phase)
     return if @destroyed
     

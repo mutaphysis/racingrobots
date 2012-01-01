@@ -9,15 +9,7 @@ class Point
   def initialize(x, y)
     @x = x
     @y = y
-  end  
-
-  def marshal_dump
-    [@x, @y]
   end
-
-  def marshal_load(data)
-    @x, @y = data.slice!(0, 2)
-  end  
 end
 
 def offset_coordinate(x, y, direction)

@@ -105,14 +105,6 @@ class Game
     @sequential_action_queue = []
   end
   
-  def marshal_dump
-    [@turn, @robots, @board]
-  end
-
-  def marshal_load(data)
-    @turn, @robots, @board = data 
-  end
-  
   def setup_board(rows)
     x = 0
     y = 0
@@ -216,7 +208,7 @@ class Game
     self
   end
   
-  def create_robot(x, y, direction)
+  def create_robot(x, y, direction=:west)
     robot = Robot.new(x, y, direction, @robots.length)
     @robots[@robots.length] = robot
     @board[y][x] << robot
