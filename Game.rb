@@ -94,6 +94,8 @@ end
 
 
 class Game  
+  attr_accessor :turn, :board, :robots
+  
   def initialize()
     @turn = 0
     @robots = []
@@ -101,6 +103,14 @@ class Game
     
     @parallel_action_queue = []
     @sequential_action_queue = []
+  end
+  
+  def marshal_dump
+    [@turn, @robots, @board]
+  end
+
+  def marshal_load(data)
+    @turn, @robots, @board = data 
   end
   
   def setup_board(rows)
