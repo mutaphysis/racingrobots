@@ -37,6 +37,23 @@ When /^a turn is played$/ do
   @game.step_turn
 end
 
+When /^a round is played$/ do
+  @game.round_turn
+end
+
+When /^a round is started$/ do
+  @game.begin_round
+end
+
+When /^a round is ended$/ do
+  @game.end_round
+end
+
+Then /^the (\d+)(?:st|nd|rd|th) robot has (\d+) program cards$/ do |robot_id, cards|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.cards.length.should == cards.to_i
+end
+
 Then /^the (\d+)(?:st|nd|rd|th) robot is not saved$/ do |robot_id|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.saved_at.should == nil

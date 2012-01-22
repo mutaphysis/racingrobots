@@ -1,6 +1,6 @@
 [Rules]
-* TODO: Program cards need to be shuffled and divided between robots at the beginning of a round
-* TODO: Each robot gets 9-damage program cards
+* DONE: Program cards need to be shuffled and divided between robots at the beginning of a round
+* DONE: Each robot gets 9-damage program cards
 * TODO: A round can only be played when all robots have programs assigned
 * TODO: Complete rounds should be playable, not just turns
 * TODO: Add turn/round logic with waiting for player input - ie. choosing program cards
