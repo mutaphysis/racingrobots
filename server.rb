@@ -33,39 +33,51 @@ before do
     #p request.body.read
 end
 
-# list all games
+# index
+get '/' do        
+    result = '<a href="/new_game">new game</a><br>
+     <a href="/games">games</a><br>'
+
+    StoredGame.all.each { |game| result += "<br><a href=\"games/#{game.id}\">#{game.id}</a>" }     
+     
+    result
+end
+
+
+# create a new game
 get '/new_game' do    
-    content_type 'application/json'
     
     game = StoredGame.new()
     game.title = "Katzenjammer"
-    game.board = Game.new()
+    #game.board = Game.new()
+    game.board = Game.create([["Le Lw", "Cs Pw", "_ Ww"], ["R", "", ""], ["", "", ""]])
         
     halt(500, "Game was not created #{game.errors.inspect}") unless game.save
-    
-    p game
+
+    content_type 'application/json'
+    {'id' => game.id }.to_json
 end
 
 
 # list all games
-get '/games' do    
-    content_type 'application/json'
+get '/games' do
     games = StoredGame.all
     results = {}    
     games.each { |game| results["#{game.id}"] = game.title }
-    
+
+    content_type 'application/json'
     results.to_json
 end
 
 get '/games/:id' do    
-    content_type 'application/json'
 
     id = params[:id].to_i    
     game = StoredGame.get(id)
         
-    halt(404, 'Game not found') if game.nil?    
+    halt(404, 'Game not found') if game.nil?   
     
-    "#{game.title} #{game.board}"
+    content_type 'application/json' 
+    { 'title' => game.title, 'board' => game.board.board }.to_json
 end
 
 
