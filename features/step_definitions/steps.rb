@@ -33,6 +33,18 @@ Given /^the (\d+)(?:st|nd|rd|th) robot already has taken (\d+) damage$/ do |robo
   robot.damage_taken = damage_taken.to_i
 end
 
+Given /^the (\d+)(?:st|nd|rd|th) robot chooses the program$/ do |robot_id, cards|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  program = cards.raw[0].collect do |card_id|
+    robot.cards[card_id.to_i]
+  end
+  robot.program = program
+end
+
+Then /^the round (can|cannot) be continued$/ do |continue|
+  @game.round_ready?.should == (continue == "can") 
+end
+
 When /^a turn is played$/ do
   @game.step_turn
 end

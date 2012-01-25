@@ -143,10 +143,18 @@ class Game
       hand = cards.take(9 - robot.damage_taken)
       robot.cards = hand
     end
-    
   end
   
   def end_round
+  end
+    
+  def round_ready?
+    ready = true
+    @robots.each do |robot|
+      ready = robot.program.compact.length == 5 and ready
+    end
+    
+    ready    
   end
   
   def step_turn
