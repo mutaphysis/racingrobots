@@ -97,6 +97,7 @@ class Game
   attr_accessor :turn, :board, :robots
   
   def initialize()
+    @round = 0
     @turn = 0
     @robots = []
     @board = []
@@ -124,10 +125,36 @@ class Game
   end
   
   def step_round
+    begin_round()
     5.times do
       self.step_turn()
       @turn += 1
     end
+    end_round()
+  end
+  
+  def begin_round
+    # recreate damaged robots from last save
+    
+    # shuffle cards and hand out to robots
+    cards = $cards.shuffle()
+    
+    @robots.each do |robot|
+      hand = cards.take(9 - robot.damage_taken)
+      robot.cards = hand
+    end
+  end
+  
+  def end_round
+  end
+    
+  def round_ready?
+    ready = true
+    @robots.each do |robot|
+      ready = robot.program.compact.length == 5 and ready
+    end
+    
+    ready    
   end
   
   def step_turn

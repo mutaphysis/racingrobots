@@ -2,12 +2,12 @@ require_relative 'BoardElement'
 
 class Robot < BoardElement
   attr_reader :id, :saved_at
-  attr_accessor :program, :destroyed, :damage_taken
-      
+  attr_accessor :program, :destroyed, :damage_taken, :cards
     
   def initialize(x, y, direction, id)
     super(x, y, direction)
     @id = id
+    @cards = []
     @program = []
     @destroyed = false
     @damage_taken = 0
