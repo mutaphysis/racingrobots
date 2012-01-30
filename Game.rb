@@ -187,6 +187,7 @@ class Game
         end
       end while check_invalid
 
+      # execute all valid parallel actions
       @parallel_action_queue.each do |action|
         action.act(self)       
       end
@@ -197,6 +198,7 @@ class Game
         action.act(self)
       end
       
+      # remove robots with enough from the field
       @robots.each do |robot|
         if not robot.destroyed and robot.damage_taken >= 9
           robot.destroyed = true
