@@ -77,9 +77,9 @@ Then /^the (\d+)st robot is saved at (\d+), (\d+)$/ do |robot_id, x, y|
   robot.saved_at.y.should == y.to_i
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot is destroyed$/ do |robot_id|
+Then /^the (\d+)(?:st|nd|rd|th) robot is( not){0,1} destroyed$/ do |robot_id, negated|
   robot = @game.get_robot(robot_id.to_i - 1)
-  robot.destroyed.should == true
+  robot.destroyed.should == (negated ? false : true)
 end
 
 Then /^the (\d+)(?:st|nd|rd|th) robot has taken (\d+) damage$/ do |robot_id, damage_taken|
