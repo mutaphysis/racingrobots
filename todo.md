@@ -1,7 +1,7 @@
 [Rules]
 * DONE: Program cards need to be shuffled and divided between robots at the beginning of a round
 * DONE: Each robot gets 9-damage program cards
-* TODO: A robot with 10 damage is destroyed, not only 9 damage (5 locked program cards are possible)
+* DONE: A robot with 10 damage is destroyed, not only 9 damage (5 locked program cards are possible)
 * TODO: A round can only be played when all robots have programs assigned
 * TODO: Complete rounds should be playable, not just turns
 * TODO: Add turn/round logic with waiting for player input - ie. choosing program cards
@@ -29,7 +29,7 @@
 * IGNORE: Houserule - No robot should receive only turn program cards (no movements)
 
 [Server]
-* TODO: Allow players choosing program cards for a robot @done
+* TODO: Allow players choosing program cards for a robot
 * TODO: Have the notion of players and have robots assigned to them
 * TODO: Validate choice of cards
 * TODO: Advance turn when all players have their cards chosen

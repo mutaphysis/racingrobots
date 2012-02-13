@@ -139,6 +139,7 @@ class Game
     # shuffle cards and hand out to robots
     cards = $cards.shuffle()
     
+    # hand each robot a movement card
     @robots.each do |robot|
       hand = cards.take(9 - robot.damage_taken)
       robot.cards = hand
@@ -227,7 +228,7 @@ class Game
       
       # remove robots with enough from the field
       @robots.each do |robot|
-        if not robot.destroyed and robot.damage_taken >= 9
+        if not robot.destroyed and robot.damage_taken > 9
           robot.destroyed = true
           @board[robot.y][robot.x].delete(robot)
         end
