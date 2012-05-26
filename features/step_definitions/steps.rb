@@ -2,8 +2,6 @@ require 'rspec'
 
 require_relative '../../Game'
 
-def mapfacing(facing) 
-end
 
 Given /^there is a board:$/ do |table|
   # table is a Cucumber::Ast::Table
