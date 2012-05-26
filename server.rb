@@ -4,7 +4,7 @@ require 'dm-core'
 require 'dm-migrations'
 require 'json'
 
-# only in dev mode
+# only in dev mode, reloads server on changes
 require "sinatra/reloader"
 
 require_relative 'Game'
@@ -45,8 +45,7 @@ end
 
 
 # create a new game
-get '/new_game' do    
-    
+get '/new_game' do
     game = StoredGame.new()
     game.title = "Katzenjammer"
     #game.board = Game.new()
@@ -69,8 +68,7 @@ get '/games' do
     results.to_json
 end
 
-get '/games/:id' do    
-
+get '/games/:id' do
     id = params[:id].to_i    
     game = StoredGame.get(id)
         
