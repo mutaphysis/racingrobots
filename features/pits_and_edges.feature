@@ -37,6 +37,7 @@ Feature: Holes and edges
 		  | moveone:10 |
     When a turn is played
     Then the 1st robot is destroyed
+    
   Scenario: A destroyed robot should not act further
     Given there is a board:
       |  |  |  |
