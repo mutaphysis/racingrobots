@@ -11,11 +11,19 @@ Given /^there is a board:$/ do |table|
 end
 
 Given /^there is a robot at (\d+), (\d+)$/ do |x, y|
-  @game.create_robot(x.to_i, y.to_i)
+  r = @game.create_robot()
+  @game.place_robot(r, x.to_i, y.to_i)
 end
 
 Given /^there is a robot at (\d+), (\d+) facing (\w+)$/ do |x, y, facing|
-  @game.create_robot(x.to_i, y.to_i, $key_direction[facing[0]])
+  r = @game.create_robot()
+  @game.place_robot(r, x.to_i, y.to_i, $key_direction[facing[0]])
+end
+
+Given /^there are (\d+) robots$/ do |num|  
+  num.to_i.times do |i|
+    @game.create_robot()
+  end
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) robots program is:$/ do |robot_id, table|
@@ -33,7 +41,10 @@ Given /^the (\d+)(?:st|nd|rd|th) robot already has taken (\d+) damage$/ do |robo
   robot.damage_taken = damage_taken.to_i
 end
 
-Given /^the (\d+)(?:st|nd|rd|th) robot chooses the program$/ do |robot_id, cards|
+
+# Modifiying the robots
+
+When /^the (\d+)(?:st|nd|rd|th) robot chooses the program$/ do |robot_id, cards|
   robot = @game.get_robot(robot_id.to_i - 1)
   program = cards.raw[0].collect do |card_id|
     robot.cards[card_id.to_i]
@@ -41,8 +52,16 @@ Given /^the (\d+)(?:st|nd|rd|th) robot chooses the program$/ do |robot_id, cards
   robot.program = program
 end
 
-Then /^the round (can|cannot) be continued$/ do |continue|
-  @game.round_ready?.should == (continue == "can") 
+When /^the (\d+)(?:st|nd|rd|th) robot choses to face (\w+)$/ do |robot_id, facing|
+  robot = @game.get_robot(robot_id.to_i - 1)
+  robot.direction = $key_direction[facing[0]]
+end
+
+
+# Advancing the game
+
+When /^the game is started$/ do
+  @game.begin_game()
 end
 
 When /^a turn is played$/ do
@@ -59,6 +78,22 @@ end
 
 When /^a round is ended$/ do
   @game.end_round
+end
+
+### Checks
+
+Then /^there should be a ([A-Z]\w*) at (\d+), (\d+)$/ do |type_name, x, y|
+  type = Kernel.const_get(type_name)
+  @game.first_of_at(x.to_i, y.to_i, type).should_not == nil
+end
+
+Then /^there should be no ([A-Z]\w*) at (\d+), (\d+)$/ do |type_name, x, y|
+  type = Kernel.const_get(type_name)
+  @game.first_of_at(x.to_i, y.to_i, type).should == nil
+end
+
+Then /^the round (can|cannot) be continued$/ do |continue|
+  @game.round_ready?.should == (continue == "can") 
 end
 
 Then /^the (\d+)(?:st|nd|rd|th) robot has (\d+) program cards$/ do |robot_id, cards|

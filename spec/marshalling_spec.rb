@@ -3,7 +3,8 @@ require_relative '../Game'
 describe Game, "#marshalling" do
   it "copying should save the instance fields" do
     game = Game.create([["Le Lw", "Cs Pw", "_ Ww"], ["R", "", ""], ["", "", ""]])
-    game.create_robot(1, 1)
+    r = game.create_robot()
+    game.place_robot(r, 1, 1)
     game.turn = 2
     
     data = Marshal.dump(game)
