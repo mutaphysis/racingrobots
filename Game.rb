@@ -142,6 +142,7 @@ class Game
         spawn_point = spawn_points.pop        
         # still no direction chosen, players need to do this as the next step
         place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
+        robot.save
         # todo waiting_for << :choose_initial_direction, robot.id
     end
   end
