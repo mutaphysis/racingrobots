@@ -14,10 +14,23 @@ Feature: Round
     And the 3rd robot choses to face north
     And the 4th robot choses to face north
 
-    Then there should be a Robot at 0, 0
-    Then there should be no Robot at 1, 0
-    Then there should be a Robot at 2, 0
-    Then there should be no Robot at 3, 0
-    Then there should be a Robot at 4, 0
-    Then there should be no Robot at 5, 0
-    Then there should be a Robot at 6, 0
+    Then there should be a robot at 0, 0
+    Then the previous robot should be saved at 0, 0
+    
+    Then there should be no robot at 1, 0
+    
+    Then there should be a robot at 2, 0
+    Then the previous robot should be saved at 2, 0    
+    
+    Then there should be no robot at 3, 0
+    
+    Then there should be a robot at 4, 0
+    Then the previous robot should be saved at 4, 0
+    
+    Then there should be no robot at 5, 0
+    
+    Then there should be a robot at 6, 0
+    Then the previous robot should be saved at 6, 0
+    
+
+    
