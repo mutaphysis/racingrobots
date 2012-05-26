@@ -133,4 +133,4 @@ Feature: Movement cards
 		  | moveone:100 |
     When a turn is played
     Then the 1st robot is at 1, 0 facing east
-	Then the 2nd robot is at 2, 0 facing north
+	  Then the 2nd robot is at 2, 0 facing north
