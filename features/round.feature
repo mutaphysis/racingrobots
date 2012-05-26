@@ -10,9 +10,9 @@ Feature: Round
   	And there is a robot at 2, 0 facing south
   	And the 3rd robot already has taken 4 damage
   	When a round is started
-    Then the 1st robot has 9 program cards 
-  	Then the 2nd robot has 8 program cards 
-  	Then the 3rd robot has 5 program cards 
+    Then the 1st robot should have 9 program cards 
+  	Then the 2nd robot should have 8 program cards 
+  	Then the 3rd robot should have 5 program cards 
 	
  Scenario: A round can only be continued when all robots have choosen their program
     Given there is a board:

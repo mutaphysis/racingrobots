@@ -6,7 +6,7 @@ Feature: Repair site element
     Given there is a board:
       | R |
     And there is a robot at 0, 0 facing east
-    Then the 1st robot is not saved
+    Then the 1st robot should not be saved
     When a turn is played
-    Then the 1st robot is saved at 0, 0
+    Then the 1st robot should be saved at 0, 0
     

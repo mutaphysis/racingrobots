@@ -94,33 +94,33 @@ Then /^the round (can|cannot) be continued$/ do |continue|
   @game.round_ready?.should == (continue == "can") 
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot has (\d+) program cards$/ do |robot_id, cards|
+Then /^the (\d+)(?:st|nd|rd|th) robot should have (\d+) program cards$/ do |robot_id, cards|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.cards.length.should == cards.to_i
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot is not saved$/ do |robot_id|
+Then /^the (\d+)(?:st|nd|rd|th) robot should not be saved$/ do |robot_id|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.saved_at.should == nil
 end
 
-Then /^the (\d+)st robot is saved at (\d+), (\d+)$/ do |robot_id, x, y|
+Then /^the (\d+)st robot should be saved at (\d+), (\d+)$/ do |robot_id, x, y|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.saved_at.x.should == x.to_i
   robot.saved_at.y.should == y.to_i
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot is( not){0,1} destroyed$/ do |robot_id, negated|
+Then /^the (\d+)(?:st|nd|rd|th) robot should( not){0,1} be destroyed$/ do |robot_id, negated|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.destroyed.should == (negated ? false : true)
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot has taken (\d+) damage$/ do |robot_id, damage_taken|
+Then /^the (\d+)(?:st|nd|rd|th) robot should have taken (\d+) damage$/ do |robot_id, damage_taken|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.damage_taken.should == damage_taken.to_i
 end
 
-Then /^the (\d+)(?:st|nd|rd|th) robot is at (\d+), (\d+) facing (\w+)$/ do |robot_id, x, y, facing|
+Then /^the (\d+)(?:st|nd|rd|th) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x, y, facing|
   robot = @game.get_robot(robot_id.to_i - 1)
   robot.x.should == x.to_i
   robot.y.should == y.to_i
