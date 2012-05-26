@@ -25,10 +25,14 @@ class Robot < BoardElement
     when 600 then
       game.shoot_laser(@x, @y, @direction, :exclude_first)
     when 700 then
-      save_point = game.first_of_at(@x, @y, RepairSite)
-      @saved_at = Point.new(@x, @y)
+      save_point = game.first_of_at(@x, @y, RepairSite)      
+      self.save unless save_point.nil?
     end    
   end    
+  
+  def save
+     @saved_at = Point.new(@x, @y)
+  end
   
   def run_program(game, turn)
     card = @program[turn]
