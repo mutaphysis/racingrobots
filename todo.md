@@ -7,20 +7,20 @@
 * DONE: Each robot is randomly assigned a starting point
 * DONE: A robot has to chose a view direction before spawning
 * DONE: Repair site repair a robot at the end of the turn
+* DONE: Respawning: Add respawning on the next turn when destroying occured
+* DONE: Respawning: A respawning robot has 2 damage tokens
+
+* TODO: Each robot gets three Life tokens
+* TODO: Add game over for a robot after all its life tokens are gone
 
 * TODO: A round can only be played when all robots have programs assigned
 * TODO: Complete rounds should be playable, not just turns
-* TODO: Add turn/round logic with waiting for player input - ie. choosing program cards, choosing respawn point
+* TODO: Add turn/round logic with waiting for player input - eg. choosing program cards, choosing respawn point
 
-* TODO: Respawning: Add respawning on the next turn when destroying occured
 * TODO: Respawning: If two or more robots would reenter play on the same space, they’re placed back on the board in the order they were destroyed.
 * TODO: Respawning: The first robot that was destroyed gets the archive space, facing any direction that player chooses.
 * TODO: Respawning: The player whose robot was destroyed next then chooses an empty adjacent space (looking orthogonally OR diagonally) and puts the robot on that space. That robot can face any direction that player chooses, except that there can’t be another robot in its line of sight 3 spaces away or closer.
 * TODO: Respawning: Ignore all board elements except for pits when placing your robot in an adjacent space. You can’t start a turn with your robot in a pit. They suffer enough as it is.
-* TODO: Respawning: A respawning robot has 2 damage tokens
-
-* TODO: Each robot gets three Life tokens
-* TODO: Add game over for a robot after all its life tokens are gone
 
 * TODO: The robot last standing wins the game
 * TODO: The game ends as tie if all robots die in the same turn
