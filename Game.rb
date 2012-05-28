@@ -158,6 +158,12 @@ class Game
 
   def begin_round
     # recreate damaged robots from last save
+    @robots.each do |robot|
+      if robot.destroyed
+        robot.restore
+        @board[robot.y][robot.x] << robot
+      end
+    end
 
     # shuffle cards and hand out to robots
     cards = $cards.shuffle()
