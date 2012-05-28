@@ -17,25 +17,25 @@ Feature: Spawning
 
     Then there should be a robot at 0, 0
     Then the previous robot should be saved at 0, 0
-    
+
     Then there should be no robot at 1, 0
-    
+
     Then there should be a robot at 2, 0
-    Then the previous robot should be saved at 2, 0    
-    
+    Then the previous robot should be saved at 2, 0
+
     Then there should be no robot at 3, 0
-    
+
     Then there should be a robot at 4, 0
     Then the previous robot should be saved at 4, 0
-    
+
     Then there should be no robot at 5, 0
-    
+
     Then there should be a robot at 6, 0
     Then the previous robot should be saved at 6, 0
-  
+
   Scenario: Robots are respawned after death in the next round, bearing two damage
     Given there is a board:
-      | | |
+      |  |  |
     And there is a robot at 0, 0 facing south
     And the 1st robot was already saved at 1, 0
     And the 1st robot already has taken 10 damage

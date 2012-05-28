@@ -56,6 +56,7 @@ end
 # Actions that happen following a priority, eg. moving and turning
 class SequentialAction
   attr_reader :priority
+
   def initialize(robot, priority, distance, direction)
     @robot = robot
     @priority = priority
@@ -77,6 +78,7 @@ end
 #noinspection RubyInstanceVariableNamingConvention
 class ParallelAction
   attr_reader :robot, :x, :y
+
   def initialize(robot, x, y, direction)
     @robot = robot
     @x = x
@@ -96,9 +98,9 @@ class ParallelAction
 
   def ==(object)
     object.equal?(self) ||
-    ( object.instance_of?(self.class) &&
-      object.x == @x &&
-      object.y == @y )
+        (object.instance_of?(self.class) &&
+            object.x == @x &&
+            object.y == @y)
   end
 end
 
@@ -140,11 +142,11 @@ class Game
     # todo sanity check if there more robots than spawnpoints
 
     @robots.each do |robot|
-        spawn_point = spawn_points.pop
-        # still no direction chosen, players need to do this as the next step
-        place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
-        robot.save
-        # todo waiting_for << :choose_initial_direction, robot.id
+      spawn_point = spawn_points.pop
+      # still no direction chosen, players need to do this as the next step
+      place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
+      robot.save
+      # todo waiting_for << :choose_initial_direction, robot.id
     end
   end
 
@@ -283,7 +285,7 @@ class Game
       end
 
       # sort sequential action by priority
-      @sequential_action_queue.sort! {|a1, a2| a2.priority <=> a1.priority }
+      @sequential_action_queue.sort! { |a1, a2| a2.priority <=> a1.priority }
       @sequential_action_queue.each do |action|
         action.act(self)
       end
@@ -349,7 +351,7 @@ class Game
 
   def check_blocked(x, y, x2, y2, direction, mode=nil)
     # check for a wall preventing leaving the current field
-    wall = @board[y][x].find { |item| item.instance_of? Wall and  item.direction == direction }
+    wall = @board[y][x].find { |item| item.instance_of? Wall and item.direction == direction }
     return true if not wall.nil?
 
     # if after an edge, no need to continue looking for things there

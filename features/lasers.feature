@@ -9,7 +9,7 @@ Feature: Lasers
     Then the 1st robot should have taken 1 damage
     When a turn is played
     Then the 1st robot should have taken 2 damage
-  
+
   Scenario: Laser firing east
     Given there is a board:
       |  | Lw |
@@ -18,7 +18,7 @@ Feature: Lasers
     Then the 1st robot should have taken 1 damage
     When a turn is played
     Then the 1st robot should have taken 2 damage
-      
+
   Scenario: Laser firing south
     Given there is a board:
       | Ls |
@@ -28,7 +28,7 @@ Feature: Lasers
     Then the 1st robot should have taken 1 damage
     When a turn is played
     Then the 1st robot should have taken 2 damage
-      
+
   Scenario: Laser firing north
     Given there is a board:
       |    |
@@ -38,7 +38,7 @@ Feature: Lasers
     Then the 1st robot should have taken 1 damage
     When a turn is played
     Then the 1st robot should have taken 2 damage
-      
+
   Scenario: Laser also damage robots standing on their field
     Given there is a board:
       | Le |
@@ -47,7 +47,7 @@ Feature: Lasers
     Then the 1st robot should have taken 1 damage
     When a turn is played
     Then the 1st robot should have taken 2 damage
-      
+
   Scenario: Lasers are blocked by robots
     Given there is a board:
       | Le |  |  |
@@ -59,7 +59,7 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot should have taken 2 damage
     Then the 2nd robot should have taken 0 damage
-      
+
   Scenario: More lasers do more damage
     Given there is a board:
       | Le |  | Lw |
@@ -68,11 +68,11 @@ Feature: Lasers
     Then the 1st robot should have taken 2 damage
     When a turn is played
     Then the 1st robot should have taken 4 damage
-      
+
   Scenario: 10 points of damage will destroy a robot
-    # But in one phase no damage overflow will carry through other robots behind it
+  # But in one phase no damage overflow will carry through other robots behind it
     Given there is a board:
-      | Le | Le |    |
+      | Le | Le |  |
     And there is a robot at 1, 0 facing north
     And the 1st robot already has taken 1 damage
     And there is a robot at 2, 0 facing north
@@ -88,7 +88,7 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot should be destroyed
     Then the 2nd robot should have taken 0 damage
-      
+
   Scenario: Robots have head mounted lasers
     Given there is a board:
       |  |  |
@@ -100,7 +100,7 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot should have taken 0 damage
     Then the 2nd robot should have taken 2 damage
-      
+
   Scenario: Robots fire lasers at each other
     Given there is a board:
       |  |  |
@@ -112,7 +112,7 @@ Feature: Lasers
     When a turn is played
     Then the 1st robot should have taken 2 damage
     Then the 2nd robot should have taken 2 damage
-      
+
   Scenario: Robots that are destroyed will no longer fire lasers
     Given there is a board:
       |  |  |

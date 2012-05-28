@@ -1,11 +1,12 @@
-$key_direction = {"w" => :west, "n" => :north, "e" => :east, "s" => :south }
-$key_rotation  = {"l" => :left, "r" => :right }
-$mirror_direction = {:west => :east, :north => :south, :east => :west, :south => :north }
-$rotate_direction = { :right => {:west => :north, :north => :east, :east => :south, :south => :west }, 
-                      :left  => {:west => :south, :south => :east, :east => :north, :north => :west }}
+$key_direction = {"w" => :west, "n" => :north, "e" => :east, "s" => :south}
+$key_rotation = {"l" => :left, "r" => :right}
+$mirror_direction = {:west => :east, :north => :south, :east => :west, :south => :north}
+$rotate_direction = {:right => {:west => :north, :north => :east, :east => :south, :south => :west},
+                     :left => {:west => :south, :south => :east, :east => :north, :north => :west}}
 
 class Point
   attr_accessor :x, :y
+
   def initialize(x, y)
     @x = x
     @y = y
@@ -18,12 +19,12 @@ def offset_coordinate(x, y, direction)
       x += 1
     when :west then
       x -= 1
-    when :north then          
+    when :north then
       y -= 1
-    when :south then          
+    when :south then
       y += 1
     else
   end
-  
+
   Point.new(x, y)
 end

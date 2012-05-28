@@ -2,7 +2,7 @@ Feature: Gear board element
   Gears turn robots clockwise or counterclockwise.
   They do not move robots.
 
-  Scenario: A robot on a clockwise gear 
+  Scenario: A robot on a clockwise gear
     Given there is a board:
       | Gr |
     And there is a robot at 0, 0 facing east
@@ -15,7 +15,7 @@ Feature: Gear board element
     When a turn is played
     Then the 1st robot should be at 0, 0 facing east
 
-  Scenario: A robot on a counter clockwise gear 
+  Scenario: A robot on a counter clockwise gear
     Given there is a board:
       | Gl |
     And there is a robot at 0, 0 facing east

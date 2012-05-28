@@ -15,7 +15,7 @@ class RepairSite < BoardElement
       robot.save
 
       if turn == 4 then
-        robot.heal 1       
+        robot.heal 1
       end
     end
   end
