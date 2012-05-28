@@ -58,6 +58,10 @@ Given /^the (\w+) robot already has taken (\d+) damage$/ do |robot_id, damage_ta
   @robot.damage_taken = damage_taken.to_i
 end
 
+Given /^the (\w+) robot was already saved at (\d+), (\d+)$/ do |robot_id, x, y|
+  @robot = query_robot(robot_id)
+  @robot.save(x.to_i, y.to_i)
+end
 
 # Modifiying the robots
 
