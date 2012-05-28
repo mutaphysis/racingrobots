@@ -1,7 +1,8 @@
-Feature: Round
+Feature: Spawning
   At the beginning of a game robots are randomly assigned to starting points
   They are placed on those starting points, the players choose their facing
   Their first save point is their intial starting point
+  When a robot is destroyed, it is respawned next turn
 
   Scenario: Robots are assigned to starting points
     Given there is a board:
@@ -31,6 +32,28 @@ Feature: Round
     
     Then there should be a robot at 6, 0
     Then the previous robot should be saved at 6, 0
+  
+  Scenario: Robots are respawned after death in the next round, bearing two damage
+    Given there is a board:
+      | | |
+    And there is a robot at 0, 0 facing south
+    And the 1st robot was already saved at 1, 0
+    And the 1st robot already has taken 10 damage
+    Then the 1st robot should not be destroyed
+    When a turn is played
+    Then the 1st robot should be destroyed
+    When a round is ended
+    When a round is started
+    Then the 1st robot should not be destroyed
+    And the 1st robot should have taken 2 damage
+    And the 1st robot choses to face north
+    And the 1st robot should be at 1, 0 facing north
+    And there should be a robot at 1, 0
+
+
     
+    
+    
+  
 
     
