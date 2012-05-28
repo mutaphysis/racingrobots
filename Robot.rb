@@ -27,8 +27,8 @@ class Robot < BoardElement
     end
   end    
   
-  def save
-     @saved_at = Point.new(@x, @y)
+  def save(x=nil, y=nil)
+    @saved_at = Point.new(x || @x, y || @y)
   end
   
   def heal(amount)
