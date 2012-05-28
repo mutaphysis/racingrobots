@@ -24,6 +24,7 @@ class Robot < BoardElement
       run_program(game, turn)
     when 600 then
       game.shoot_laser(@x, @y, @direction, :exclude_first)
+    else
     end
   end    
   
@@ -49,7 +50,7 @@ class Robot < BoardElement
   def run_program(game, turn)
     card = @program[turn]
     
-    if not card.nil? then
+    unless card.nil?
       card.act(game, self)
     end
   end

@@ -2,15 +2,15 @@ require_relative 'utils'
 require_relative 'BoardElement'
 
 class Conveyor < BoardElement
-  attr_reader :turnFromLeft
+  attr_reader :turn_from_left
   
-  def initialize(x, y, direction, express, turnFromLeft, turnFromRight)
+  def initialize(x, y, direction, express, turn_from_left, turn_from_right)
     super(x, y, direction)
     
     @express = express   
     
-    @turnFromLeft = turnFromLeft
-    @turnFromRight = turnFromRight
+    @turn_from_left = turn_from_left
+    @turn_from_right = turn_from_right
     
     if @express then @phases = [200, 300] else @phases = [300]  
     end
@@ -20,7 +20,7 @@ class Conveyor < BoardElement
     # there can only be one robot here anyway
     robot = game.first_of_at(@x, @y, Robot)    
     
-    if not robot.nil? then
+    unless robot.nil?
       new_coord = offset_coordinate(robot.x, robot.y, @direction)
       direction = robot.direction
       
@@ -28,10 +28,10 @@ class Conveyor < BoardElement
       
       # if moved onto another conveyor, could be turned
       conveyor = game.first_of_at(new_coord.x, new_coord.y, Conveyor)
-      if not conveyor.nil? then
+      unless conveyor.nil?
         turn = conveyor.get_turn_from(@direction)
         
-        if not turn.nil? then
+        unless turn.nil?
           direction = $rotate_direction[turn][robot.direction]          
         end                
       end            
@@ -41,11 +41,11 @@ class Conveyor < BoardElement
   end
   
   def get_turn_from(direction)     
-    if @turnFromLeft and direction == $rotate_direction[:right][@direction] then
+    if @turn_from_left and direction == $rotate_direction[:right][@direction] then
       return :left
     end    
     
-    if @turnFromRight and direction == $rotate_direction[:left][@direction] then
+    if @turn_from_right and direction == $rotate_direction[:left][@direction] then
       return :right
     end
     

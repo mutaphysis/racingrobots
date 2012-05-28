@@ -22,10 +22,10 @@ def parse_fields(description, x, y)
       when 'C' then
         express = !fieldDescription.index('*').nil?
         direction = $key_direction[fieldDescription[1]]
-        turnFromLeft = !fieldDescription.index('l').nil?
-        turnFromRight = !fieldDescription.index('r').nil?
+        turn_from_left = !fieldDescription.index('l').nil?
+        turn_from_right = !fieldDescription.index('r').nil?
 
-        fields << Conveyor.new(x, y, direction, express, turnFromLeft, turnFromRight)
+        fields << Conveyor.new(x, y, direction, express, turn_from_left, turn_from_right)
       when 'G' then
         rotation = $key_rotation[fieldDescription[1]]
         fields << Gear.new(x, y, rotation)
@@ -45,6 +45,8 @@ def parse_fields(description, x, y)
       when 'S' then
         id = fieldDescription[1].to_i
         fields << SpawnPoint.new(x, y, id)
+      else
+        fail "found non matching fieldDescription"
     end
   end
 
@@ -65,13 +67,14 @@ class SequentialAction
     if @distance != 0
       game.move_robot(@robot, @distance)
     end
-    if not @direction.nil?
+    unless @direction.nil?
       game.update_robot(@robot, @robot.x, @robot.y, @direction)
     end
   end
 end
 
 # Actions that happen at the same time, eg. being moved by a conveyor (conflicts can happen)
+#noinspection RubyInstanceVariableNamingConvention
 class ParallelAction
   attr_reader :robot, :x, :y
   def initialize(robot, x, y, direction)
@@ -114,9 +117,7 @@ class Game
 
   # Create a board from a 2d array of tile definitions
   def setup_board(rows)
-    x = 0
     y = 0
-
     rows.collect do |row|
       @board[y] = []
       x = 0
@@ -139,12 +140,42 @@ class Game
     # todo sanity check if there more robots than spawnpoints
 
     @robots.each do |robot|
-        spawn_point = spawn_points.pop        
+        spawn_point = spawn_points.pop
         # still no direction chosen, players need to do this as the next step
         place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
         robot.save
         # todo waiting_for << :choose_initial_direction, robot.id
     end
+  end
+
+  def game_loop
+    # \ game
+    #   loop while not game over conditions, next round
+    #   \ round
+    #     wait for choosing starting direction
+    #     wait for choosing respawn position
+    #     wait for choosing respawn direction
+    #     loop through all 5 turns
+    #     \ turn
+    #       wait for choosing program cards
+    #       loop through all registered phases
+    #       \ phase
+    #         loop actions in this phase
+    #       / phase
+    #     / turn
+    #   / round
+    # / game
+
+    #@game_state = [:game, :begin]
+    #@paused = begin_game()
+    #@paused = step_game() unless @paused
+    #@paused = end_game() unless @paused
+  end
+
+  def step_game
+  end
+
+  def end_game
   end
 
   def step_round
@@ -162,6 +193,7 @@ class Game
       if robot.destroyed
         robot.restore
         @board[robot.y][robot.x] << robot
+        #@robot.awaits_input(:direction)
       end
     end
 
@@ -181,14 +213,14 @@ class Game
   def round_ready?
     ready = true
     @robots.each do |robot|
-      ready = robot.program.compact.length == 5 and ready
+      (ready = robot.program.compact.length == 5) and ready
     end
 
     ready
   end
 
   def step_turn
-    phases = {};
+    phases = {}
 
     # collect phases
     @board.each do |row|
@@ -223,12 +255,13 @@ class Game
       @parallel_action_queue.each do |action|
         robot = first_of_at(action.x, action.y, Robot)
 
-        if not robot.nil?
+        unless robot.nil?
           action.undo()
         end
       end
 
       # undo all invalid (moving two robots to the same position) parallel actions
+      check_invalid = false
       begin
         check_invalid = false
         @parallel_action_queue.combination(2) do |combination|
@@ -236,7 +269,7 @@ class Game
           second = combination[1]
 
           # action that move to the same position should be reversed
-          if first == second then
+          if first == second
             first.undo()
             second.undo()
             check_invalid = true
@@ -327,18 +360,18 @@ class Game
     wall = @board[y2][x2].find { |item| item.instance_of? Wall and item.direction == direction2 }
     return true if not wall.nil?
 
-    if mode != :no_recursive then
+    if mode != :no_recursive
       # if there is a robot on the next field, we might push it into a wall
       robot = @board[y2][x2].find { |item| item.instance_of? Robot }
 
-      if not robot.nil?
+      unless robot.nil?
         next_coord = offset_coordinate(x2, y2, direction)
         # continue checking recursively
         return self.check_blocked(x2, y2, next_coord.x, next_coord.y, direction)
       end
     end
 
-    return false
+    false
   end
 
   def shoot_laser(x, y, direction, options=nil)
@@ -369,7 +402,7 @@ class Game
 
   def push(x, y, direction)
     pushed_robot = self.first_of_at(x, y, Robot)
-    if not pushed_robot.nil? then
+    unless pushed_robot.nil?
       pushed_coord = offset_coordinate(x, y, direction)
       self.push(pushed_coord.x, pushed_coord.y, direction)
       update_robot(pushed_robot, pushed_coord.x, pushed_coord.y, pushed_robot.direction)
@@ -387,7 +420,7 @@ class Game
 
     # driving in a pit destroys
     pit = self.first_of_at(x, y, Pit)
-    if not pit.nil?
+    unless pit.nil?
       robot.destroyed = true
       return
     end
@@ -416,7 +449,7 @@ class Game
   def first_of_at(x, y, type)
     return nil if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length
 
-    return @board[y][x].find { |item| item.instance_of? type }
+    @board[y][x].find { |item| item.instance_of? type }
   end
 
   def get_at(x, y)

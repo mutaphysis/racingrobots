@@ -11,7 +11,7 @@ class RepairSite < BoardElement
     # check for a robot
     robot = game.first_of_at(@x, @y, Robot)
 
-    if not robot.nil? then
+    unless robot.nil?
       robot.save
 
       if turn == 4 then

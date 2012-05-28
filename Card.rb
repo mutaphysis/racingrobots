@@ -1,3 +1,5 @@
+require_relative 'utils'
+
 initial_priority = 10
 priority_increment = 10
 
@@ -32,14 +34,16 @@ class Card
     when :movetwo then 
       game.add_sequential_robot_action(robot, @priority, 2) 
     when :movethree then 
-      game.add_sequential_robot_action(robot, @priority, 3) 
+      game.add_sequential_robot_action(robot, @priority, 3)
+    else
+      fail "unknown action"
     end
   end
 end
 
 # prefill the program card stack
-seed_order.each do |k|  
-  (0..seed[k]).each do |n|
+seed_order.each do |k|
+  (0..seed[k]).each do |_|
     $cards << Card.new(k, ($cards.length * priority_increment + initial_priority))
   end
 end

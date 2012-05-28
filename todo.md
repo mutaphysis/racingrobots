@@ -10,12 +10,12 @@
 * DONE: Respawning: Add respawning on the next turn when destroying occured
 * DONE: Respawning: A respawning robot has 2 damage tokens
 
-* TODO: Each robot gets three Life tokens
-* TODO: Add game over for a robot after all its life tokens are gone
-
-* TODO: A round can only be played when all robots have programs assigned
 * TODO: Complete rounds should be playable, not just turns
 * TODO: Add turn/round logic with waiting for player input - eg. choosing program cards, choosing respawn point
+* TODO: A round can only be played when all robots have programs assigned
+
+* TODO: Each robot gets three Life tokens
+* TODO: Add game over for a robot after all its life tokens are gone
 
 * TODO: Respawning: If two or more robots would reenter play on the same space, they’re placed back on the board in the order they were destroyed.
 * TODO: Respawning: The first robot that was destroyed gets the archive space, facing any direction that player chooses.
