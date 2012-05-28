@@ -13,7 +13,7 @@ class Robot < BoardElement
     @damage_taken = 0
     @saved_at = nil
         
-    @phases = [100, 600, 700]
+    @phases = [100, 600]
   end
   
   def act(game, turn, phase)
@@ -24,14 +24,15 @@ class Robot < BoardElement
       run_program(game, turn)
     when 600 then
       game.shoot_laser(@x, @y, @direction, :exclude_first)
-    when 700 then
-      save_point = game.first_of_at(@x, @y, RepairSite)      
-      self.save unless save_point.nil?
-    end    
+    end
   end    
   
   def save
      @saved_at = Point.new(@x, @y)
+  end
+  
+  def heal(amount)
+    @damage_taken = [0, @damage_taken - amount].max
   end
   
   def run_program(game, turn)

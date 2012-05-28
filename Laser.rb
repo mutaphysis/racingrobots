@@ -10,5 +10,5 @@ class Laser < BoardElement
   
   def act(game, turn, phase)
     game.shoot_laser(@x, @y, @direction)
-  end  
+  end
 end

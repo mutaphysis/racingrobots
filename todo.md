@@ -6,6 +6,7 @@
 * DONE: Each robot is randomly assigned a starting point
 * DONE: Each robot is randomly assigned a starting point
 * DONE: A robot has to chose a view direction before spawning
+* DONE: Repair site repair a robot at the end of the turn
 
 * TODO: A round can only be played when all robots have programs assigned
 * TODO: Complete rounds should be playable, not just turns

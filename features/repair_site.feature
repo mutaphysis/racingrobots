@@ -20,7 +20,7 @@ Feature: Repair site element
     And there is a robot at 1, 0 facing south
     And there is a robot at 2, 0 facing south    
     And the 2nd robot already has taken 1 damage
-    And the 3rd robot already has taken 1 damage   
+    And the 3rd robot already has taken 1 damage
     When a round is played
     # Minimum of 0 damage tokens
     Then the 1st robot should have taken 0 damage
