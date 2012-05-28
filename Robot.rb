@@ -34,6 +34,17 @@ class Robot < BoardElement
   def heal(amount)
     @damage_taken = [0, @damage_taken - amount].max
   end
+    
+  def restore
+    fail "Robot has not been saved" if @saved_at.nil?
+    
+    # copies are restored with two damage
+    @damage_taken = 2
+    @destroyed = false
+    @x = @saved_at.x
+    @y = @saved_at.y
+    @direction = :undefined
+  end  
   
   def run_program(game, turn)
     card = @program[turn]
