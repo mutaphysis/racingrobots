@@ -86,7 +86,7 @@ When /^a turn is played$/ do
 end
 
 When /^a round is played$/ do
-  @game.round_turn
+  @game.step_round
 end
 
 When /^a round is started$/ do
