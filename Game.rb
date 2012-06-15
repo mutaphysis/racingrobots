@@ -147,7 +147,7 @@ class Game
       place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
       robot.save
 
-      #@waiting_for << :choose_initial_direction, robot.id
+      robot.awaits_input :choose_initial_direction
     end
   end
 
@@ -169,10 +169,6 @@ class Game
     #   / round
     # / game
 
-    #@game_state = [:game, :begin]
-    #@paused = begin_game()
-    #@paused = step_game() unless @paused
-    #@paused = end_game() unless @paused
   end
 
   def step_game
@@ -196,7 +192,9 @@ class Game
       if robot.destroyed
         robot.restore
         @board[robot.y][robot.x] << robot
-        #@robot.awaits_input(:direction)
+
+        # TODO handle two robots respawning at the same position
+        robot.awaits_input :choose_respawn_direction
       end
     end
 
@@ -207,6 +205,7 @@ class Game
     @robots.each do |robot|
       hand = cards.take(9 - robot.damage_taken)
       robot.cards = hand
+      robot.awaits_input :choose_program_cards
     end
   end
 
@@ -216,9 +215,8 @@ class Game
   def round_ready?
     ready = true
     @robots.each do |robot|
-      (ready = robot.program.compact.length == 5) and ready
+      ready &&= robot.waiting?
     end
-
     ready
   end
 
@@ -271,7 +269,7 @@ class Game
           first = combination[0]
           second = combination[1]
 
-          # action that move to the same position should be reversed
+          # actions that move to the same position should be reversed
           if first == second
             first.undo()
             second.undo()

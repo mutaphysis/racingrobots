@@ -71,6 +71,7 @@ When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
     @robot.cards[card_id.to_i]
   end
   @robot.program = program
+  @robot.finished_input :choose_program_cards
 end
 
 When /^the (\w+) robot choses to face (\w+)$/ do |robot_id, facing|

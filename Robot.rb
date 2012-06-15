@@ -9,8 +9,9 @@ class Robot < BoardElement
     @id = id
     @cards = []
     @program = []
-    @destroyed = false
+    @waiting_for = []
     @damage_taken = 0
+    @destroyed = false
     @saved_at = nil
 
     @phases = [100, 600]
@@ -26,6 +27,18 @@ class Robot < BoardElement
         game.shoot_laser(@x, @y, @direction, :exclude_first)
       else
     end
+  end
+
+  def awaits_input(needed_action)
+    @waiting_for << needed_action
+  end
+
+  def finished_input(finished_action)
+    @waiting_for.delete finished_action
+  end
+
+  def waiting?
+    @waiting_for.empty?
   end
 
   def save(x=nil, y=nil)
