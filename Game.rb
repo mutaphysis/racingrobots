@@ -290,7 +290,7 @@ class Game
         action.act(self)
       end
 
-      # remove robots with enough from the field
+      # remove robots with enough damage from the field
       @robots.each do |robot|
         if not robot.destroyed and robot.damage_taken > 9
           robot.destroyed = true
