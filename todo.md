@@ -1,3 +1,6 @@
+[General]
+* TODO: Change globals in utils.rb to useful functions
+
 [Rules]
 * DONE: Program cards need to be shuffled and divided between robots at the beginning of a round
 * DONE: Each robot gets 9-damage program cards
