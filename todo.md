@@ -36,7 +36,7 @@
 
 * IGNORE: custom rule - No robot should receive only turn program cards (no movements)
 
-	[Server]	
+[Server]
 * TODO: Allow choosing program cards for a robot
 * TODO: Validate choice of cards (only allow cards that were dealt to a certain player)
 * TODO: Advance turn when all players have their cards chosen
