@@ -39,11 +39,14 @@ Feature: Spawning
     And there is a robot at 0, 0 facing south
     And the 1st robot was already saved at 1, 0
     And the 1st robot already has taken 10 damage
+
     Then the 1st robot should not be destroyed
+
     When a turn is played
     Then the 1st robot should be destroyed
+
     When a round is ended
-    When a round is started
+    And a round is started
     Then the 1st robot should not be destroyed
     And the 1st robot should have taken 2 damage
     And the 1st robot choses to face north
