@@ -146,7 +146,8 @@ class Game
       # still no direction chosen, players need to do this as the next step
       place_robot(robot, spawn_point.x, spawn_point.y, :undefined)
       robot.save
-      # todo waiting_for << :choose_initial_direction, robot.id
+
+      #@waiting_for << :choose_initial_direction, robot.id
     end
   end
 
@@ -438,19 +439,25 @@ class Game
     @robots[id]
   end
 
-  def find_all_of(type)
-    results = []
-    @board.each do |column|
-      column.each do |tiles|
-        results += tiles.find_all { |item| item.instance_of? type }
+  # creates an enumerator for all the tiles on the board
+  def each_tile
+    Enumerator.new do |yielder|
+      @board.each do |column|
+        column.each do |tiles|
+          tiles.each do |tile|
+            yielder.yield(tile)
+          end
+        end
       end
     end
-    results
+  end
+
+  def find_all_of(type)
+    each_tile.find_all { |item| item.instance_of? type }
   end
 
   def first_of_at(x, y, type)
     return nil if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length
-
     @board[y][x].find { |item| item.instance_of? type }
   end
 
