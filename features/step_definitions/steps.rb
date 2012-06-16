@@ -44,7 +44,7 @@ Given /^there is a robot at (\d+), (\d+) facing (\w+)$/ do |x, y, facing|
   @game.place_robot(@robot, x.to_i, y.to_i, $key_direction[facing[0]])
 end
 
-Given /^there are (\d+) robots$/ do |num|
+Given /^there (?:are|is) (\d+) robots?$/ do |num|
   num.to_i.times do |_|
     @game.create_robot()
   end
@@ -87,8 +87,13 @@ When /^the (\w+) robot chooses a random program$/ do |robot_id|
   @robot.finished_input :choose_program_cards
 end
 
+When /^the (\w+) robot choses to start facing (\w+)$/ do |robot_id, facing|
+  @robot = query_robot(robot_id)
+  @robot.direction = $key_direction[facing[0]]
+  @robot.finished_input :choose_initial_direction
+end
 
-When /^the (\w+) robot choses to face (\w+)$/ do |robot_id, facing|
+When /^the (\w+) robot choses to respawn facing (\w+)$/ do |robot_id, facing|
   @robot = query_robot(robot_id)
   @robot.direction = $key_direction[facing[0]]
   @robot.finished_input :choose_respawn_direction

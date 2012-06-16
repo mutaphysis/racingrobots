@@ -10,10 +10,10 @@ Feature: Spawning
     And there are 4 robots
 
     When the game is started
-    And the 1st robot choses to face north
-    And the 2nd robot choses to face north
-    And the 3rd robot choses to face north
-    And the 4th robot choses to face north
+    And the 1st robot choses to start facing north
+    And the 2nd robot choses to start facing north
+    And the 3rd robot choses to start facing north
+    And the 4th robot choses to start facing north
 
     Then there should be a robot at 0, 0
     Then the previous robot should be saved at 0, 0
@@ -49,9 +49,22 @@ Feature: Spawning
     And a round is started
     Then the 1st robot should not be destroyed
     And the 1st robot should have taken 2 damage
-    And the 1st robot choses to face north
+    And the 1st robot choses to respawn facing north
     And the 1st robot should be at 1, 0 facing north
     And there should be a robot at 1, 0
+
+  Scenario:  Robots that are spawned at the beginning of the game need to chose their direction before the game continues
+    Given there is a board:
+      | S1 |  |
+    And there is 1 robot
+
+    When the game is started
+    Then the round cannot be continued
+
+    When the 1st robot choses to start facing north
+    Then the round can be continued
+
+
 
   Scenario: Robots that are respawned need to chose their direction/position before the game continues
     Given there is a board:
@@ -62,11 +75,9 @@ Feature: Spawning
     And the previous robot chooses a random program
     Then the round cannot be continued
 
-    When the previous robot choses to face north
+    When the previous robot choses to respawn facing north
     Then the round can be continued
-    
-    
-    
+
   
 
     
