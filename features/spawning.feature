@@ -53,7 +53,17 @@ Feature: Spawning
     And the 1st robot should be at 1, 0 facing north
     And there should be a robot at 1, 0
 
+  Scenario: Robots that are respawned need to chose their direction/position before the game continues
+    Given there is a board:
+      |  |  |
+    And there is a destroyed robot saved at 1, 0
 
+    When a round is started
+    And the previous robot chooses a random program
+    Then the round cannot be continued
+
+    When the previous robot choses to face north
+    Then the round can be continued
     
     
     

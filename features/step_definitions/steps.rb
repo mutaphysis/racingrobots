@@ -32,6 +32,13 @@ Given /^there is a robot at (\d+), (\d+)$/ do |x, y|
   @game.place_robot(@robot, x.to_i, y.to_i)
 end
 
+Given /^there is a destroyed robot saved at (\d+), (\d+)$/ do |x, y|
+  @robot = @game.create_robot()
+  @robot.damage_taken = 10
+  @robot.destroyed = true
+  @robot.save(x.to_i, y.to_i)
+end
+
 Given /^there is a robot at (\d+), (\d+) facing (\w+)$/ do |x, y, facing|
   @robot= @game.create_robot()
   @game.place_robot(@robot, x.to_i, y.to_i, $key_direction[facing[0]])
@@ -74,9 +81,17 @@ When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
   @robot.finished_input :choose_program_cards
 end
 
+When /^the (\w+) robot chooses a random program$/ do |robot_id|
+  @robot = query_robot(robot_id)
+  @robot.program = @robot.cards.shuffle.take 5
+  @robot.finished_input :choose_program_cards
+end
+
+
 When /^the (\w+) robot choses to face (\w+)$/ do |robot_id, facing|
   @robot = query_robot(robot_id)
   @robot.direction = $key_direction[facing[0]]
+  @robot.finished_input :choose_respawn_direction
 end
 
 
