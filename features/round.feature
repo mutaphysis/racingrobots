@@ -23,11 +23,11 @@ Feature: Round
     When a round is started
     And the 1st robot chooses the program
       | 0 | 1 | 2 | 3 | 4 |
-    Then the round cannot be continued
+    Then the game should await input
     When the 2nd robot chooses the program
       | 0 | 1 | 2 | 3 | 4 |
-    Then the round cannot be continued
+    Then the game should await input
     When the 3rd robot chooses the program
       | 0 | 1 | 2 | 3 | 4 |
-    Then the round can be continued
+    Then the game should not await input
 	

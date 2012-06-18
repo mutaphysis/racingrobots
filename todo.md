@@ -1,5 +1,6 @@
 [General]
 * TODO: Change globals in utils.rb to useful functions
+* TODO: Transform board array stack to Hash and assign/access like this:  board[[x,y]] = [tiles]
 
 [Rules]
 * DONE: Program cards need to be shuffled and divided between robots at the beginning of a round

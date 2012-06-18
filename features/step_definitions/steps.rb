@@ -87,6 +87,12 @@ When /^the (\w+) robot chooses a random program$/ do |robot_id|
   @robot.finished_input :choose_program_cards
 end
 
+When /^the (\w+) robot chooses an empty program$/ do |robot_id|
+  @robot = query_robot(robot_id)
+  @robot.program = []
+  @robot.finished_input :choose_program_cards
+end
+
 When /^the (\w+) robot choses to start facing (\w+)$/ do |robot_id, facing|
   @robot = query_robot(robot_id)
   @robot.direction = $key_direction[facing[0]]
@@ -104,6 +110,10 @@ end
 
 When /^the game is started$/ do
   @game.begin_game()
+end
+
+When /^the game is continued/ do
+  @game.continue()
 end
 
 When /^a turn is played$/ do
@@ -145,8 +155,20 @@ Then /^there should be (a|no) robot at (\d+), (\d+)$/ do |negate, x, y|
   end
 end
 
-Then /^the round (can|cannot) be continued$/ do |continue|
-  @game.round_ready?.should == (continue == "can")
+Then /^the game should (not )?await input$/ do |negated|
+  @game.awaits_input?.should == (negated == "not ")
+end
+
+Then /^the game should (not )?await the following input$/ do |negated, input_table|
+  inputs = input_table.raw[0].collect do |value|
+    value.to_sym
+  end
+
+  awaited_input = @game.awaited_input
+  p awaited_input
+  exists = inputs.inject(true) { |last, input| p input; last && awaited_input.include?(input) }
+  exists.should == true
+
 end
 
 Then /^the (\w+) robot should have (\d+) program cards$/ do |robot_id, cards|
@@ -182,4 +204,10 @@ Then /^the (\w+) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x,
   @robot.y.should == y.to_i
   @robot.destroyed.should == false
   @robot.direction.should === $key_direction[facing[0]]
+end
+
+Then /^there should be (\d+) rounds played$/ do |rounds|
+end
+
+Then /^there should be (\d+) turns played$/ do |turns|
 end

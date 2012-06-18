@@ -151,7 +151,7 @@ class Game
     end
   end
 
-  def game_loop
+  def continue
     # \ game
     #   loop while not game over conditions, next round
     #   \ round
@@ -168,13 +168,8 @@ class Game
     #     / turn
     #   / round
     # / game
-
-  end
-
-  def step_game
-  end
-
-  def end_game
+    begin_game()
+    step_round()
   end
 
   def step_round
@@ -212,12 +207,12 @@ class Game
   def end_round
   end
 
-  def round_ready?
-    ready = true
-    @robots.each do |robot|
-      ready &&= robot.waiting?
-    end
-    ready
+  def awaited_input
+    @robots.collect { |r| r.awaited_input }.flatten.uniq
+  end
+
+  def awaits_input?
+    @robots.inject(true) { |last, r| last && r.waiting? }
   end
 
   def step_turn

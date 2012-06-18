@@ -29,6 +29,10 @@ class Robot < BoardElement
     end
   end
 
+  def awaited_input
+    @waiting_for
+  end
+
   def awaits_input(needed_action)
     @waiting_for << needed_action
   end

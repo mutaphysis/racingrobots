@@ -53,18 +53,16 @@ Feature: Spawning
     And the 1st robot should be at 1, 0 facing north
     And there should be a robot at 1, 0
 
-  Scenario:  Robots that are spawned at the beginning of the game need to chose their direction before the game continues
+  Scenario: Robots that are spawned at the beginning of the game need to chose their direction before the game continues
     Given there is a board:
       | S1 |  |
     And there is 1 robot
 
     When the game is started
-    Then the round cannot be continued
+    Then the game should await input
 
     When the 1st robot choses to start facing north
-    Then the round can be continued
-
-
+    Then the game should not await input
 
   Scenario: Robots that are respawned need to chose their direction/position before the game continues
     Given there is a board:
@@ -73,11 +71,7 @@ Feature: Spawning
 
     When a round is started
     And the previous robot chooses a random program
-    Then the round cannot be continued
+    Then the game should await input
 
     When the previous robot choses to respawn facing north
-    Then the round can be continued
-
-  
-
-    
+    Then the game should not await input
