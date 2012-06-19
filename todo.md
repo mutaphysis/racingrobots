@@ -16,26 +16,25 @@
 * DONE: Complete rounds should be playable, not just turns
 * DONE: Add turn/round logic with waiting for player input - eg. choosing program cards, choosing respawn point
 * DONE: A round can only be played when all robots have programs assigned
+* DONE: Each robot gets three Life tokens
+* DONE: Add game over for a robot after all its life tokens are gone
 
-* TODO: Each robot gets three Life tokens
-* TODO: Add game over for a robot after all its life tokens are gone
-
-* TODO: Respawning: If two or more robots would reenter play on the same space, they’re placed back on the board in the order they were destroyed.
-* TODO: Respawning: The first robot that was destroyed gets the archive space, facing any direction that player chooses.
-* TODO: Respawning: The player whose robot was destroyed next then chooses an empty adjacent space (looking orthogonally OR diagonally) and puts the robot on that space. That robot can face any direction that player chooses, except that there can’t be another robot in its line of sight 3 spaces away or closer.
-* TODO: Respawning: Ignore all board elements except for pits when placing your robot in an adjacent space. You can’t start a turn with your robot in a pit. They suffer enough as it is.
+* TODO: More than four damage lock program cards
+* TODO: Locked program cards are not dealt in the next turn
 
 * TODO: The robot last standing wins the game
 * TODO: The game ends as tie if all robots die in the same turn
 
 * TODO: Add race logic - multiple stops, the robot first visiting them all in order wins the game
 
-* TODO: More than four damage lock program cards
-* TODO: Locked program cards are not dealt in the next turn!!!
-
 * TODO: Robots can turn off in the next round
 * TODO: Robots that will be turned off, heal at the beginning of the next round, but don't take program cards
 * TODO: Robots that will be turned off return their locked cards before the next round
+
+* TODO: Respawning: If two or more robots would reenter play on the same space, they’re placed back on the board in the order they were destroyed.
+* TODO: Respawning: The first robot that was destroyed gets the archive space, facing any direction that player chooses.
+* TODO: Respawning: The player whose robot was destroyed next then chooses an empty adjacent space (looking orthogonally OR diagonally) and puts the robot on that space. That robot can face any direction that player chooses, except that there can’t be another robot in its line of sight 3 spaces away or closer.
+* TODO: Respawning: Ignore all board elements except for pits when placing your robot in an adjacent space. You can’t start a turn with your robot in a pit. They suffer enough as it is.
 
 * IGNORE: custom rule - No robot should receive only turn program cards (no movements)
 
