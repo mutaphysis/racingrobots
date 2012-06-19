@@ -18,22 +18,22 @@ class Card
 
   def act(game, robot)
     case @type
-      when :uturn then
+      when :uturn
         direction = $mirror_direction[robot.direction]
         game.add_sequential_robot_action(robot, @priority, 0, direction)
-      when :rotateleft then
+      when :rotateleft
         direction = $rotate_direction[:left][robot.direction]
         game.add_sequential_robot_action(robot, @priority, 0, direction)
-      when :rotateright then
+      when :rotateright
         direction = $rotate_direction[:right][robot.direction]
         game.add_sequential_robot_action(robot, @priority, 0, direction)
-      when :backup then
+      when :backup
         game.add_sequential_robot_action(robot, @priority, -1)
-      when :moveone then
+      when :moveone
         game.add_sequential_robot_action(robot, @priority, 1)
-      when :movetwo then
+      when :movetwo
         game.add_sequential_robot_action(robot, @priority, 2)
-      when :movethree then
+      when :movethree
         game.add_sequential_robot_action(robot, @priority, 3)
       else
         fail "unknown action"

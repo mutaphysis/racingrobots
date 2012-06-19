@@ -12,7 +12,7 @@ class Conveyor < BoardElement
     @turn_from_left = turn_from_left
     @turn_from_right = turn_from_right
 
-    if @express then
+    if @express
       @phases = [200, 300]
     else
       @phases = [300]
@@ -44,11 +44,11 @@ class Conveyor < BoardElement
   end
 
   def get_turn_from(direction)
-    if @turn_from_left and direction == $rotate_direction[:right][@direction] then
+    if @turn_from_left && direction == $rotate_direction[:right][@direction]
       return :left
     end
 
-    if @turn_from_right and direction == $rotate_direction[:left][@direction] then
+    if @turn_from_right && direction == $rotate_direction[:left][@direction]
       return :right
     end
 

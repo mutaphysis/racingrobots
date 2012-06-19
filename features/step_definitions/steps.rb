@@ -13,7 +13,7 @@ def query_robot(id)
   end
 
   case id
-    when "previous" then
+    when "previous"
       @robot
     else
       nil
@@ -150,7 +150,7 @@ Then /^there should be (a|no) ([A-Z]\w*) at (\d+), (\d+)$/ do |negate, type_name
   type = Kernel.const_get(type_name)
   object = @game.first_of_at(x.to_i, y.to_i, type)
 
-  if negate == "no" then
+  if negate == "no"
     object.should == nil
   else
     object.should_not == nil
@@ -160,7 +160,7 @@ end
 Then /^there should be (a|no) robot at (\d+), (\d+)$/ do |negate, x, y|
   @robot = @game.first_of_at(x.to_i, y.to_i, Robot)
 
-  if negate == "no" then
+  if negate == "no"
     @robot.should == nil
   else
     @robot.should_not == nil
@@ -168,7 +168,7 @@ Then /^there should be (a|no) robot at (\d+), (\d+)$/ do |negate, x, y|
 end
 
 Then /^the game should (not )?await input$/ do |negated|
-  @game.awaits_input?.should == (not negated)
+  @game.awaits_input?.should == (!negated)
 end
 
 Then /^the game should (not )?await the following input$/ do |negated, input_table|

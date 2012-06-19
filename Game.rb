@@ -19,30 +19,30 @@ def parse_fields(description, x, y)
 
   descriptions.each do |fieldDescription|
     case fieldDescription[0]
-      when 'C' then
+      when 'C'
         express = !fieldDescription.index('*').nil?
         direction = $key_direction[fieldDescription[1]]
         turn_from_left = !fieldDescription.index('l').nil?
         turn_from_right = !fieldDescription.index('r').nil?
 
         fields << Conveyor.new(x, y, direction, express, turn_from_left, turn_from_right)
-      when 'G' then
+      when 'G'
         rotation = $key_rotation[fieldDescription[1]]
         fields << Gear.new(x, y, rotation)
-      when 'P' then
+      when 'P'
         direction = $key_direction[fieldDescription[1]]
         fields << Pusher.new(x, y, direction)
-      when 'L' then
+      when 'L'
         direction = $key_direction[fieldDescription[1]]
         fields << Laser.new(x, y, direction)
-      when 'W' then
+      when 'W'
         direction = $key_direction[fieldDescription[1]]
         fields << Wall.new(x, y, direction)
-      when '_' then
+      when '_'
         fields << Pit.new(x, y)
-      when 'R' then
+      when 'R'
         fields << RepairSite.new(x, y)
-      when 'S' then
+      when 'S'
         id = fieldDescription[1].to_i
         fields << SpawnPoint.new(x, y, id)
       else
@@ -170,10 +170,10 @@ class Game
     #   / round
     # / game
 
-    if turn == -1 then
+    if turn == -1
       #p "begin_round"
       begin_round()
-    elsif turn == 5 then
+    elsif turn == 5
       #p "end_round"
       end_round()
     else
@@ -244,7 +244,7 @@ class Game
       row.each do |column|
         column.each do |item|
           item.phases.each do |phase|
-            if phases[phase].nil? then
+            if phases[phase].nil?
               phases[phase] = [item]
             else
               phases[phase] << item
@@ -307,7 +307,7 @@ class Game
 
       # remove robots with enough damage from the field
       @robots.each do |robot|
-        if not robot.destroyed? and robot.damage_taken > 9
+        if !robot.destroyed? && robot.damage_taken > 9
           robot.destroy()
           @board[robot.y][robot.x].delete(robot)
         end
@@ -346,7 +346,7 @@ class Game
   def move_robot(robot, distance)
     direction = robot.direction
 
-    if distance < 0 then
+    if distance < 0
       direction = $mirror_direction[direction]
     end
     distance = distance.abs
@@ -368,16 +368,16 @@ class Game
 
   def check_blocked(x, y, x2, y2, direction, mode=nil)
     # check for a wall preventing leaving the current field
-    wall = @board[y][x].find { |item| item.instance_of? Wall and item.direction == direction }
-    return true if not wall.nil?
+    wall = @board[y][x].find { |item| item.instance_of?(Wall) && item.direction == direction }
+    return true unless wall.nil?
 
     # if after an edge, no need to continue looking for things there
-    return false if x2 < 0 or y2 < 0 or y2 >= @board.length or x2 >= @board[y2].length
+    return false if x2 < 0 || y2 < 0 || y2 >= @board.length || x2 >= @board[y2].length
 
     # check for a wall preventing entering the next field
     direction2 = $mirror_direction[direction]
-    wall = @board[y2][x2].find { |item| item.instance_of? Wall and item.direction == direction2 }
-    return true if not wall.nil?
+    wall = @board[y2][x2].find { |item| item.instance_of?(Wall) && item.direction == direction2 }
+    return true unless wall.nil?
 
     if mode != :no_recursive
       # if there is a robot on the next field, we might push it into a wall
@@ -404,7 +404,7 @@ class Game
     end
 
     begin
-      break if new_coord.x < 0 or new_coord.y < 0 or new_coord.y >= @board.length or new_coord.x >= @board[new_coord.y].length
+      break if new_coord.x < 0 || new_coord.y < 0 || new_coord.y >= @board.length || new_coord.x >= @board[new_coord.y].length
 
       next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
 
@@ -414,7 +414,7 @@ class Game
       new_coord = next_coord
     end while target.nil?
 
-    if target then
+    if target
       target.damage_taken += 1
     end
   end
@@ -432,7 +432,7 @@ class Game
     @board[robot.y][robot.x].delete(robot)
 
     # driving of the edge destroys
-    if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length
+    if x < 0 || y < 0 || y >= @board.length || x >= @board[y].length
       robot.destroy()
       return
     end
@@ -473,7 +473,7 @@ class Game
   end
 
   def first_of_at(x, y, type)
-    return nil if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length
+    return nil if x < 0 || y < 0 || y >= @board.length || x >= @board[y].length
     @board[y][x].find { |item| item.instance_of? type }
   end
 

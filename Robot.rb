@@ -22,9 +22,9 @@ class Robot < BoardElement
     return if @destroyed
 
     case phase
-      when 100 then
+      when 100
         run_program(game, turn)
-      when 600 then
+      when 600
         game.shoot_laser(@x, @y, @direction, :exclude_first)
       else
     end
@@ -43,7 +43,7 @@ class Robot < BoardElement
   end
 
   def waiting?
-    not @waiting_for.empty?
+    !@waiting_for.empty?
   end
 
   def save(x=nil, y=nil)

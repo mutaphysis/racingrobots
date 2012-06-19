@@ -14,7 +14,7 @@ class RepairSite < BoardElement
     unless robot.nil?
       robot.save
 
-      if turn == 4 then
+      if turn == 4
         robot.heal 1
       end
     end
