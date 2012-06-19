@@ -35,7 +35,7 @@ end
 Given /^there is a destroyed robot saved at (\d+), (\d+)$/ do |x, y|
   @robot = @game.create_robot()
   @robot.damage_taken = 10
-  @robot.destroyed = true
+  @robot.destroy()
   @robot.save(x.to_i, y.to_i)
 end
 
@@ -194,7 +194,7 @@ end
 
 Then /^the (\w+) robot should( not)? be destroyed$/ do |robot_id, negated|
   @robot = query_robot(robot_id)
-  @robot.destroyed.should == (negated ? false : true)
+  @robot.destroyed?.should == (negated ? false : true)
 end
 
 Then /^the (\w+) robot should have taken (\d+) damage$/ do |robot_id, damage_taken|
@@ -206,7 +206,7 @@ Then /^the (\w+) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x,
   @robot = query_robot(robot_id)
   @robot.x.should == x.to_i
   @robot.y.should == y.to_i
-  @robot.destroyed.should == false
+  @robot.destroyed?.should == false
   @robot.direction.should === $key_direction[facing[0]]
 end
 

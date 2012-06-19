@@ -2,7 +2,7 @@ require_relative 'BoardElement'
 
 class Robot < BoardElement
   attr_reader :id, :saved_at
-  attr_accessor :program, :destroyed, :damage_taken, :cards
+  attr_accessor :program, :damage_taken, :cards
 
   def initialize(x, y, direction, id)
     super(x, y, direction)
@@ -11,6 +11,7 @@ class Robot < BoardElement
     @program = []
     @waiting_for = []
     @damage_taken = 0
+    @lifes = 3
     @destroyed = false
     @saved_at = nil
 
@@ -51,6 +52,15 @@ class Robot < BoardElement
 
   def heal(amount)
     @damage_taken = [0, @damage_taken - amount].max
+  end
+
+  def destroy
+    @destroyed = true
+    @lifes -= 1
+  end
+
+  def destroyed?
+    @destroyed
   end
 
   def restore

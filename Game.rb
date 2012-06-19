@@ -197,7 +197,7 @@ class Game
 
     # recreate damaged robots from last save
     @robots.each do |robot|
-      if robot.destroyed
+      if robot.destroyed?
         robot.restore
         @board[robot.y][robot.x] << robot
 
@@ -301,8 +301,8 @@ class Game
 
       # remove robots with enough damage from the field
       @robots.each do |robot|
-        if not robot.destroyed and robot.damage_taken > 9
-          robot.destroyed = true
+        if not robot.destroyed? and robot.damage_taken > 9
+          robot.destroy()
           @board[robot.y][robot.x].delete(robot)
         end
       end
@@ -356,7 +356,7 @@ class Game
       # even if this is an edge or a pit, we can push on to it even if the current robot will die there, anything else reaching this new_coord is already dead
       self.push(new_coord.x, new_coord.y, direction)
       update_robot(robot, new_coord.x, new_coord.y, robot.direction)
-      break if robot.destroyed
+      break if robot.destroyed?
     end
   end
 
@@ -427,14 +427,14 @@ class Game
 
     # driving of the edge destroys
     if x < 0 or y < 0 or y >= @board.length or x >= @board[y].length
-      robot.destroyed = true
+      robot.destroy()
       return
     end
 
     # driving in a pit destroys
     pit = self.first_of_at(x, y, Pit)
     unless pit.nil?
-      robot.destroyed = true
+      robot.destroy()
       return
     end
 
