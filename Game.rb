@@ -105,11 +105,12 @@ class ParallelAction
 end
 
 class Game
-  attr_accessor :turn, :board, :robots
+  attr_accessor :round, :turn, :phase, :board, :robots
 
   def initialize()
     @round = 0
-    @turn = 0
+    @turn = -1
+    @phase = 0
     @robots = []
     @board = []
 
@@ -168,20 +169,32 @@ class Game
     #     / turn
     #   / round
     # / game
-    begin_game()
-    step_round()
+
+    if turn == -1 then
+      #p "begin_round"
+      begin_round()
+    elsif turn == 5 then
+      #p "end_round"
+      end_round()
+    else
+      #p "step_turn"
+      step_turn()
+    end
+
+    continue() unless awaits_input?
   end
 
   def step_round
     begin_round()
     5.times do
-      self.step_turn()
-      @turn += 1
+      step_turn()
     end
     end_round()
   end
 
   def begin_round
+    @turn = 0
+
     # recreate damaged robots from last save
     @robots.each do |robot|
       if robot.destroyed
@@ -205,6 +218,8 @@ class Game
   end
 
   def end_round
+    @turn = -1
+    @round += 1
   end
 
   def awaited_input
@@ -212,7 +227,7 @@ class Game
   end
 
   def awaits_input?
-    @robots.inject(true) { |last, r| last && r.waiting? }
+    @robots.inject(false) { |last, r| last || r.waiting? }
   end
 
   def step_turn
@@ -292,6 +307,8 @@ class Game
         end
       end
     end
+
+    @turn += 1
 
     self
   end

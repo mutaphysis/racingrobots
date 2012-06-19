@@ -108,15 +108,21 @@ end
 
 # Advancing the game
 
-When /^the game is started$/ do
-  @game.begin_game()
-end
-
 When /^the game is continued/ do
   @game.continue()
 end
 
+When /^the game is started$/ do
+  @game.begin_game()
+end
+
 When /^a turn is played$/ do
+  @game.turn = 0
+  @game.step_turn
+end
+
+When /^turn (\d+) is played$/ do |num|
+  @game.turn = num.to_i
   @game.step_turn
 end
 
@@ -156,7 +162,7 @@ Then /^there should be (a|no) robot at (\d+), (\d+)$/ do |negate, x, y|
 end
 
 Then /^the game should (not )?await input$/ do |negated|
-  @game.awaits_input?.should == (negated == "not ")
+  @game.awaits_input?.should == (not negated)
 end
 
 Then /^the game should (not )?await the following input$/ do |negated, input_table|
@@ -165,10 +171,8 @@ Then /^the game should (not )?await the following input$/ do |negated, input_tab
   end
 
   awaited_input = @game.awaited_input
-  p awaited_input
-  exists = inputs.inject(true) { |last, input| p input; last && awaited_input.include?(input) }
+  exists = inputs.inject(true) { |last, input| last && awaited_input.include?(input) }
   exists.should == true
-
 end
 
 Then /^the (\w+) robot should have (\d+) program cards$/ do |robot_id, cards|
@@ -207,7 +211,9 @@ Then /^the (\w+) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x,
 end
 
 Then /^there should be (\d+) rounds played$/ do |rounds|
+  @game.round.should == rounds.to_i
 end
 
 Then /^there should be (\d+) turns played$/ do |turns|
+  @game.turn.should == turns.to_i
 end

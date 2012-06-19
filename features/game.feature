@@ -8,7 +8,8 @@ Feature: Game
       |    |    | S2 |
     And there are 2 robots
 
-    When the game is continued
+    When the game is started
+    And the game is continued
     Then there should be 0 rounds played
     And there should be 0 turns played
     And the game should await the following input

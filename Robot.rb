@@ -42,7 +42,7 @@ class Robot < BoardElement
   end
 
   def waiting?
-    @waiting_for.empty?
+    not @waiting_for.empty?
   end
 
   def save(x=nil, y=nil)
