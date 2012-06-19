@@ -1,7 +1,7 @@
 Feature: Lives
   Each robot gets three life tokens
   Each time a robot is destroyed a life token is taken away
-  If a robot is destroyed with just one life tokens, he is removed from the game and does not respawn anymore
+  If a robot is destroyed with just one life tokens, it is removed from the game and does not respawn anymore
 
   Scenario: A fresh robot has three life tokens
     Given there is a board:
