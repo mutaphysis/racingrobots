@@ -30,6 +30,14 @@ class Robot < BoardElement
     end
   end
 
+  def run_program(game, turn)
+    card = @program[turn]
+
+    unless card.nil?
+      card.act(game, self)
+    end
+  end
+
   def awaited_input
     @waiting_for
   end
@@ -55,6 +63,8 @@ class Robot < BoardElement
   end
 
   def destroy
+    fail "Robot already destroyed" if @destroyed
+
     @destroyed = true
     @lives -= 1
   end
@@ -72,13 +82,5 @@ class Robot < BoardElement
     @x = @saved_at.x
     @y = @saved_at.y
     @direction = :undefined
-  end
-
-  def run_program(game, turn)
-    card = @program[turn]
-
-    unless card.nil?
-      card.act(game, self)
-    end
   end
 end
