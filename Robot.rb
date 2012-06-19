@@ -1,7 +1,7 @@
 require_relative 'BoardElement'
 
 class Robot < BoardElement
-  attr_reader :id, :saved_at
+  attr_reader :id, :saved_at, :lifes
   attr_accessor :program, :damage_taken, :cards
 
   def initialize(x, y, direction, id)

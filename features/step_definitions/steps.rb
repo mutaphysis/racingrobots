@@ -217,3 +217,8 @@ end
 Then /^there should be (\d+) turns? played$/ do |turns|
   @game.turn.should == turns.to_i
 end
+
+Then /^the (\w+) robot should have (\d+) lifes$/ do |robot_id, lifes|
+  @robot = query_robot(robot_id)
+  @robot.lifes.should == lifes.to_i
+end
