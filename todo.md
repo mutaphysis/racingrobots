@@ -13,10 +13,9 @@
 * DONE: Repair site repair a robot at the end of the turn
 * DONE: Respawning: Add respawning on the next turn when destroying occured
 * DONE: Respawning: A respawning robot has 2 damage tokens
-
-* TODO: Complete rounds should be playable, not just turns
-* TODO: Add turn/round logic with waiting for player input - eg. choosing program cards, choosing respawn point
-* TODO: A round can only be played when all robots have programs assigned
+* DONE: Complete rounds should be playable, not just turns
+* DONE: Add turn/round logic with waiting for player input - eg. choosing program cards, choosing respawn point
+* DONE: A round can only be played when all robots have programs assigned
 
 * TODO: Each robot gets three Life tokens
 * TODO: Add game over for a robot after all its life tokens are gone
