@@ -57,7 +57,8 @@ Given /^the (\w+) robots program is:$/ do |robot_id, table|
     Card.new(values[0].to_sym, values[1].to_i)
   end
 
-  @robot.program = program
+  # inject illegal program
+  @robot.instance_exec(program) { |program| @program = program }
 end
 
 Given /^the (\w+) robot already has taken (\d+) damage$/ do |robot_id, damage_taken|
@@ -72,7 +73,7 @@ end
 
 Given /^the (\w+) robot has (\d+) (?:life|lives)/ do |robot_id, lives|
   @robot = query_robot(robot_id)
-  # instance exec to set private variable
+  # inject lives
   @robot.instance_exec(lives.to_i) { |lives| @lives = lives }
 end
 
@@ -83,19 +84,20 @@ When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
   program = cards.raw[0].collect do |card_id|
     @robot.cards[card_id.to_i]
   end
-  @robot.program = program
+  @robot.choose_program(program)
   @robot.finished_input :choose_program_cards
 end
 
 When /^the (\w+) robot chooses a random program$/ do |robot_id|
   @robot = query_robot(robot_id)
-  @robot.program = @robot.cards.shuffle.take 5
-  @robot.finished_input :choose_program_cards
+  @robot.choose_program(@robot.cards.shuffle.take(5))
+
 end
 
 When /^the (\w+) robot chooses an empty program$/ do |robot_id|
   @robot = query_robot(robot_id)
-  @robot.program = []
+  # inject illegal program
+  @robot.instance_exec() { @program = [] }
   @robot.finished_input :choose_program_cards
 end
 

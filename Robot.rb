@@ -1,8 +1,8 @@
 require_relative 'BoardElement'
 
 class Robot < BoardElement
-  attr_reader :id, :saved_at, :lives
-  attr_accessor :program, :damage_taken, :cards
+  attr_reader :id, :saved_at, :lives, :program
+  attr_accessor :damage_taken, :cards
 
   def initialize(x, y, direction, id)
     super(x, y, direction)
@@ -36,6 +36,11 @@ class Robot < BoardElement
     unless card.nil?
       card.act(game, self)
     end
+  end
+
+  def choose_program(program)
+
+    finished_input :choose_program_cards
   end
 
   def awaited_input
