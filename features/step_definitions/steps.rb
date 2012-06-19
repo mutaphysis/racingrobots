@@ -41,7 +41,7 @@ end
 
 Given /^there is a robot at (\d+), (\d+) facing (\w+)$/ do |x, y, facing|
   @robot= @game.create_robot()
-  @game.place_robot(@robot, x.to_i, y.to_i, $key_direction[facing[0]])
+  @game.place_robot(@robot, x.to_i, y.to_i, DIRECTION_SHORT_MAP[facing[0]])
 end
 
 Given /^there (?:are|is) (\d+) robots?$/ do |num|
@@ -101,13 +101,13 @@ end
 
 When /^the (\w+) robot choses to start facing (\w+)$/ do |robot_id, facing|
   @robot = query_robot(robot_id)
-  @robot.direction = $key_direction[facing[0]]
+  @robot.direction = DIRECTION_SHORT_MAP[facing[0]]
   @robot.finished_input :choose_initial_direction
 end
 
 When /^the (\w+) robot choses to respawn facing (\w+)$/ do |robot_id, facing|
   @robot = query_robot(robot_id)
-  @robot.direction = $key_direction[facing[0]]
+  @robot.direction = DIRECTION_SHORT_MAP[facing[0]]
   @robot.finished_input :choose_respawn_direction
 end
 
@@ -213,7 +213,7 @@ Then /^the (\w+) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x,
   @robot.x.should == x.to_i
   @robot.y.should == y.to_i
   @robot.destroyed?.should == false
-  @robot.direction.should === $key_direction[facing[0]]
+  @robot.direction.should === DIRECTION_SHORT_MAP[facing[0]]
 end
 
 Then /^there should be (\d+) rounds? played$/ do |rounds|

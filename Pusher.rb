@@ -9,7 +9,7 @@ class Pusher < BoardElement
   end
 
   def act(game, turn, phase)
-    next_coord = offset_coordinate(@x, @y, @direction)
+    next_coord = Direction.offset_coordinate(@x, @y, @direction)
     blocked = game.check_blocked(@x, @y, next_coord.x, next_coord.y, direction)
 
     game.push(@x, @y, @direction) unless blocked

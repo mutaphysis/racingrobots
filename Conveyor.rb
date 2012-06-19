@@ -24,7 +24,7 @@ class Conveyor < BoardElement
     robot = game.first_of_at(@x, @y, Robot)
 
     unless robot.nil?
-      new_coord = offset_coordinate(robot.x, robot.y, @direction)
+      new_coord = Direction.offset_coordinate(robot.x, robot.y, @direction)
       direction = robot.direction
 
       return if game.check_blocked(@x, @y, new_coord.x, new_coord.y, @direction)
@@ -35,7 +35,7 @@ class Conveyor < BoardElement
         turn = conveyor.get_turn_from(@direction)
 
         unless turn.nil?
-          direction = $rotate_direction[turn][robot.direction]
+          direction = Direction.rotate(robot.direction, turn)
         end
       end
 
@@ -44,11 +44,11 @@ class Conveyor < BoardElement
   end
 
   def get_turn_from(direction)
-    if @turn_from_left && direction == $rotate_direction[:right][@direction]
+    if @turn_from_left && direction == Direction.rotate_right(@direction)
       return :left
     end
 
-    if @turn_from_right && direction == $rotate_direction[:left][@direction]
+    if @turn_from_right && direction == Direction.rotate_left(@direction)
       return :right
     end
 

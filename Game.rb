@@ -21,22 +21,22 @@ def parse_fields(description, x, y)
     case fieldDescription[0]
       when 'C'
         express = !fieldDescription.index('*').nil?
-        direction = $key_direction[fieldDescription[1]]
+        direction = DIRECTION_SHORT_MAP[fieldDescription[1]]
         turn_from_left = !fieldDescription.index('l').nil?
         turn_from_right = !fieldDescription.index('r').nil?
 
         fields << Conveyor.new(x, y, direction, express, turn_from_left, turn_from_right)
       when 'G'
-        rotation = $key_rotation[fieldDescription[1]]
+        rotation = ROTATION_SHORT_MAP[fieldDescription[1]]
         fields << Gear.new(x, y, rotation)
       when 'P'
-        direction = $key_direction[fieldDescription[1]]
+        direction = DIRECTION_SHORT_MAP[fieldDescription[1]]
         fields << Pusher.new(x, y, direction)
       when 'L'
-        direction = $key_direction[fieldDescription[1]]
+        direction = DIRECTION_SHORT_MAP[fieldDescription[1]]
         fields << Laser.new(x, y, direction)
       when 'W'
-        direction = $key_direction[fieldDescription[1]]
+        direction = DIRECTION_SHORT_MAP[fieldDescription[1]]
         fields << Wall.new(x, y, direction)
       when '_'
         fields << Pit.new(x, y)
@@ -347,14 +347,14 @@ class Game
     direction = robot.direction
 
     if distance < 0
-      direction = $mirror_direction[direction]
+      direction = Direction.mirror(direction)
     end
     distance = distance.abs
 
     new_coord = Point.new(robot.x, robot.y)
     distance.times do
-      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
-      blocked = self.check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction)
+      next_coord = Direction.offset_coordinate(new_coord.x, new_coord.y, direction)
+      blocked = check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction)
       break if blocked
 
       new_coord = next_coord
@@ -375,7 +375,7 @@ class Game
     return false if x2 < 0 || y2 < 0 || y2 >= @board.length || x2 >= @board[y2].length
 
     # check for a wall preventing entering the next field
-    direction2 = $mirror_direction[direction]
+    direction2 = Direction.mirror(direction)
     wall = @board[y2][x2].find { |item| item.instance_of?(Wall) && item.direction == direction2 }
     return true unless wall.nil?
 
@@ -384,7 +384,7 @@ class Game
       robot = @board[y2][x2].find { |item| item.instance_of? Robot }
 
       unless robot.nil?
-        next_coord = offset_coordinate(x2, y2, direction)
+        next_coord = Direction.offset_coordinate(x2, y2, direction)
         # continue checking recursively
         return self.check_blocked(x2, y2, next_coord.x, next_coord.y, direction)
       end
@@ -398,7 +398,7 @@ class Game
     target = nil
 
     if options == :exclude_first
-      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
+      next_coord = Direction.offset_coordinate(new_coord.x, new_coord.y, direction)
       return if check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction, :no_recursive)
       new_coord = next_coord
     end
@@ -406,7 +406,7 @@ class Game
     begin
       break if new_coord.x < 0 || new_coord.y < 0 || new_coord.y >= @board.length || new_coord.x >= @board[new_coord.y].length
 
-      next_coord = offset_coordinate(new_coord.x, new_coord.y, direction)
+      next_coord = Direction.offset_coordinate(new_coord.x, new_coord.y, direction)
 
       break if check_blocked(new_coord.x, new_coord.y, next_coord.x, next_coord.y, direction, :no_recursive)
 
@@ -422,7 +422,7 @@ class Game
   def push(x, y, direction)
     pushed_robot = self.first_of_at(x, y, Robot)
     unless pushed_robot.nil?
-      pushed_coord = offset_coordinate(x, y, direction)
+      pushed_coord = Direction.offset_coordinate(x, y, direction)
       self.push(pushed_coord.x, pushed_coord.y, direction)
       update_robot(pushed_robot, pushed_coord.x, pushed_coord.y, pushed_robot.direction)
     end

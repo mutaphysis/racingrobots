@@ -14,7 +14,7 @@ class Gear < BoardElement
     robot = game.first_of_at(@x, @y, Robot)
 
     unless robot.nil?
-      direction = $rotate_direction[@rotation][robot.direction]
+      direction = Direction.rotate(robot.direction, @rotation)
       game.add_parallel_robot_action(robot, robot.x, robot.y, direction)
     end
   end
