@@ -70,6 +70,12 @@ Given /^the (\w+) robot was already saved at (\d+), (\d+)$/ do |robot_id, x, y|
   @robot.save(x.to_i, y.to_i)
 end
 
+Given /^the (\w+) robot has (\d+) (?:life|lives)/ do |robot_id, lives|
+  @robot = query_robot(robot_id)
+  # instance exec to set private variable
+  @robot.instance_exec(lives.to_i) { |lives| @lives = lives }
+end
+
 # Modifiying the robots
 
 When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
@@ -218,7 +224,7 @@ Then /^there should be (\d+) turns? played$/ do |turns|
   @game.turn.should == turns.to_i
 end
 
-Then /^the (\w+) robot should have (\d+) lifes$/ do |robot_id, lifes|
+Then /^the (\w+) robot should have (\d+) (?:life|lives)$/ do |robot_id, lives|
   @robot = query_robot(robot_id)
-  @robot.lifes.should == lifes.to_i
+  @robot.lives.should == lives.to_i
 end

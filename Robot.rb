@@ -1,7 +1,7 @@
 require_relative 'BoardElement'
 
 class Robot < BoardElement
-  attr_reader :id, :saved_at, :lifes
+  attr_reader :id, :saved_at, :lives
   attr_accessor :program, :damage_taken, :cards
 
   def initialize(x, y, direction, id)
@@ -11,7 +11,7 @@ class Robot < BoardElement
     @program = []
     @waiting_for = []
     @damage_taken = 0
-    @lifes = 3
+    @lives = 3
     @destroyed = false
     @saved_at = nil
 
@@ -56,7 +56,7 @@ class Robot < BoardElement
 
   def destroy
     @destroyed = true
-    @lifes -= 1
+    @lives -= 1
   end
 
   def destroyed?
