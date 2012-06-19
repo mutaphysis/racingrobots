@@ -220,6 +220,12 @@ class Game
   def end_round
     @turn = -1
     @round += 1
+
+    @robots.each do |robot|
+      if robot.destroyed? && robot.lives <= 0
+          @robots.delete robot
+      end
+    end
   end
 
   def awaited_input
