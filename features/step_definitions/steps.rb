@@ -210,10 +210,10 @@ Then /^the (\w+) robot should be at (\d+), (\d+) facing (\w+)$/ do |robot_id, x,
   @robot.direction.should === $key_direction[facing[0]]
 end
 
-Then /^there should be (\d+) rounds played$/ do |rounds|
+Then /^there should be (\d+) rounds? played$/ do |rounds|
   @game.round.should == rounds.to_i
 end
 
-Then /^there should be (\d+) turns played$/ do |turns|
+Then /^there should be (\d+) turns? played$/ do |turns|
   @game.turn.should == turns.to_i
 end
