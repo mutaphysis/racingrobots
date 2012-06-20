@@ -77,6 +77,14 @@ Given /^the (\w+) robot has (\d+) (?:life|lives)/ do |robot_id, lives|
   @robot.instance_exec(lives.to_i) { |lives| @lives = lives }
 end
 
+Given /^the (\w+) robot has received the following cards$/ do |robot_id, table|
+  @robot = @game.get_robot(robot_id.to_i - 1)
+  @robot.cards = table.raw[0].collect do |value|
+    values = value.split(":")
+    Card.get_card(values[0].to_sym, values[1].to_i)
+  end
+end
+
 # Modifiying the robots
 
 When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
@@ -85,13 +93,11 @@ When /^the (\w+) robot chooses the program$/ do |robot_id, cards|
     @robot.cards[card_id.to_i]
   end
   @robot.choose_program(program)
-  @robot.finished_input :choose_program_cards
 end
 
 When /^the (\w+) robot chooses a random program$/ do |robot_id|
   @robot = query_robot(robot_id)
   @robot.choose_program(@robot.cards.shuffle.take(5))
-
 end
 
 When /^the (\w+) robot chooses an empty program$/ do |robot_id|
@@ -179,8 +185,14 @@ Then /^the game should (not )?await the following input$/ do |negated, input_tab
   end
 
   awaited_input = @game.awaited_input
-  exists = inputs.inject(true) { |last, input| last && awaited_input.include?(input) }
-  exists.should == true
+  exists = false
+  if negated
+    exists = inputs.inject(false) { |last, input| last || awaited_input.include?(input) }
+    exists.should == false
+  else
+    exists = inputs.inject(true) { |last, input| last && awaited_input.include?(input) }
+    exists.should == true
+  end
 end
 
 Then /^the (\w+) robot should have (\d+) program cards$/ do |robot_id, cards|
@@ -229,4 +241,18 @@ end
 Then /^the (\w+) robot should have (\d+) (?:life|lives)$/ do |robot_id, lives|
   @robot = query_robot(robot_id)
   @robot.lives.should == lives.to_i
+end
+
+Then /^the (\w+) robot should (not )?fail choosing the following program$/ do |robot_id, negated, table|
+  @robot = query_robot(robot_id)
+  cards = table.raw[0].collect do |value|
+    values = value.split(":")
+    Card.get_card(values[0].to_sym, values[1].to_i)
+  end
+
+  if negated
+    expect { @robot.choose_program(cards) }.should_not raise_error
+  else
+    expect { @robot.choose_program(cards) }.should raise_error
+  end
 end

@@ -113,6 +113,7 @@ class Game
     @phase = 0
     @robots = []
     @board = []
+    @cards = Card.build_game_cards
 
     @parallel_action_queue = []
     @sequential_action_queue = []
@@ -207,7 +208,7 @@ class Game
     end
 
     # shuffle cards and hand out to robots
-    cards = $cards.shuffle()
+    cards = @cards.shuffle()
 
     # hand each robot a movement card
     @robots.each do |robot|

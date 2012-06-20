@@ -39,6 +39,21 @@ class Robot < BoardElement
   end
 
   def choose_program(program)
+    allowed_cards = [5, [0, 5 - @damage_taken + 4].max].min
+
+    fail "Wrong number of cards chosen #{program.length} instead of #{allowed_cards}" unless program.length == allowed_cards
+
+    new_program = []
+    program.each do |chosen_card|
+      unless @cards.include? chosen_card
+        # restore cards before failing
+        @cards += new_program
+        fail "Chosen card not found in cards"
+      end
+      @cards.delete chosen_card
+      new_program << chosen_card
+    end
+    @program += new_program
 
     finished_input :choose_program_cards
   end
