@@ -9,7 +9,11 @@ Feature: Robots using their program cards
     Given there is a board:
       |  |  |  |  |  |
     And there is a robot at 0, 0 facing east
-    And the previous robot has received the following cards
+    And a round is started
+    Then the game should await the following input
+      | choose_program_cards |
+
+    When the previous robot has received the following cards
       | rotateleft:70 | rotateleft:80 | rotateleft:90 | rotateleft:100 | rotateleft:110 | rotateleft:120 | rotateleft:130 | rotateleft:140 | rotateleft:150 |
 
     Then the previous robot should fail choosing the following program
@@ -23,7 +27,11 @@ Feature: Robots using their program cards
 
     When the previous robot already has taken 6 damage
     Then the previous robot should fail choosing the following program
-      | rotateleft:70 | rotateleft:80 | rotateleft:90 | rotateleft:100 | rotateleft:110 | rotateleft:120 |
+      | rotateleft:70 | rotateleft:80 | rotateleft:90 | rotateleft:100 | rotateleft:110 |
+    Then the previous robot should fail choosing the following program
+      | rotateleft:70 | rotateleft:80 | rotateleft:90 | rotateleft:100 |
+    Then the game should await the following input
+      | choose_program_cards |
 
     Then the previous robot should not fail choosing the following program
       | rotateleft:70 | rotateleft:80 | rotateleft:90 |
